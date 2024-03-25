@@ -38,6 +38,23 @@ func test_revive():
 	assert_false(character_died.is_dead)
 
 
+func test_remove_hp_to_character():
+	assert_false(character_died.is_dead)
+	
+	await wait_for_signal(character_died.hp_removed, 1)
+	character_died.hp -= 5
+	assert_signal_emitted(character_died, "hp_removed", "test_remove_hp_to_character() passed.")
+
+
+func test_set_hp_to_zero():
+	assert_false(character_died.is_dead)
+	
+	await wait_for_signal(character_died.died, 1)
+	character_died.hp = 0
+	assert_signal_emitted(character_died, "hp_removed", "test_set_hp_to_zero() passed.")
+	assert_signal_emitted(character_died, "died", "test_set_hp_to_zero() passed.")
+
+
 func test_xp_added():
 	await wait_for_signal(character_random.xp_added, 1)
 	character_random.xp += 2
@@ -68,4 +85,3 @@ func test_reset_xp_to_zero():
 	assert_eq(character_random.xp_total, 0)
 	assert_eq(character_random.xp_required, 0)
 	assert_eq(character_random.level, 0)
-

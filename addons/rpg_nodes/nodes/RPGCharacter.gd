@@ -64,17 +64,23 @@ signal energy_without()
 @export var hp := 20:
 	set(value):
 		if not is_dead:
-			hp = clamp(value, 0, hp_max)
+			var old_hp := hp
+			var new_hp := clamp(value, 0, hp_max)
 			
-			if value > 0 and hp == hp_max:
+			if old_hp < new_hp:
+				hp = new_hp
+				hp_added.emit(value)
+			else:
+				hp = new_hp
+				hp_removed.emit(value)
+			
+			if new_hp == hp_max:
+				hp = new_hp
 				hp_is_full.emit()
-			elif value > 0 and hp != hp_max:
-				hp_added.emit()
-			elif value < 0 and hp != 0:
-				hp_removed.emit()
 			
-			if hp == 0:
+			if new_hp == 0:
 				is_dead = true
+				hp = new_hp
 				died.emit()
 		else:
 			self.message.emit("I am die: " + name + " " + character_name)
@@ -153,7 +159,7 @@ var xp_drop_amount := 0
 var is_dead := false
 
 
-func revive(revive_with_max_hp := true):
+func revive(custom_hp := 1, revive_with_max_hp := true):
 	if not is_dead:
 		message.emit("You can't revive someone alive")
 		return
@@ -163,7 +169,7 @@ func revive(revive_with_max_hp := true):
 	if revive_with_max_hp:
 		hp = hp_max
 	else:
-		hp = 1
+		hp = custom_hp
 	
 	revived.emit()
 
