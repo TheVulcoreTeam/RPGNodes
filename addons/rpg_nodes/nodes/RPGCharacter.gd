@@ -31,10 +31,7 @@ const MAX_VALUE = 100000
 
 signal level_increased(new_level)
 signal xp_added(amount)
-# Si muere, si drop_xp > 0, entonces dropea xp
 signal xp_droped(amount)
-# El amount es la cantidad que se añadió, no siempre es la
-# cantidad enviada por medio de "add_hp(amount)"
 signal hp_added(amount)
 signal hp_removed(amount)
 signal hp_is_full()
@@ -44,6 +41,7 @@ signal energy_added(amount)
 signal energy_removed(amount)
 signal energy_is_full()
 signal energy_without()
+
 # TODO: Falta implementar los métodos add_defense, remove_defense
 # signal add_defense # TODO
 # signal remove_defense # TODO

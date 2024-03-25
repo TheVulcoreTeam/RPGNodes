@@ -26,7 +26,7 @@ class_name RPGNode
 
 signal message(msg)
 
-@export var _debug := true
+@export var _debug := false
 
 
 func _ready():
@@ -35,6 +35,6 @@ func _ready():
 
 
 func _on_message(msg):
-	print_rich("[color=green][RPGNodes] [color=red]", msg)
+	print_rich("[color=green][RPGNodes] [color=darkred]", msg)
 
 
