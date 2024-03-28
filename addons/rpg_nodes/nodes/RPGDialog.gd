@@ -24,35 +24,64 @@ extends RPGNode
 
 class_name RPGDialog
 
-# Estos son las propiedades que deben ser asignadas a la interfaz:
-# transmitter_name : Es el nombre que emite el mensaje actual.
-# avatar : texture de avatar, imagen actual. (Debe de ser un Sprite)
-# text: texto actual. 
-var transmitter_name
-var avatar
-var text
+@export_node_path("RichTextLabel")
+var text : NodePath
 
 # Posición del avatar
 enum AvatarPos {LEFT, RIGHT}
 var avatar_pos = AvatarPos.LEFT
 
-var dialogue = []
+var dialogue := []
 
 var timer
 
 # Se cambia el trasmitter_name
-signal changed_transmitter_name # OK
+signal transmitter_name_changed
 # Se cambia el avatar
-signal changed_avatar
+signal avatar_changed
 # Pasa al siguiente texto
-signal changed_text # OK
-# Se actualiza el texto (por cada letra)
-signal updated_text # OK
+signal text_changed
 # Comienza el dialogo
-signal start_dialog # OK
-signal end_section # OK
+signal dialog_started
+signal section_ended
 # Termina el dialogo
-signal end_dialog # OK
-signal empty_dialog
+signal dialog_ended
 
-var next_pressed = false
+var next_pressed := false
+
+var section_idx := 0
+
+
+func add_section(character_name : String, message : String, avatar_image : TextureRect = null, avatar_position : AvatarPos = AvatarPos.LEFT):
+	dialogue.append({
+		"CHARACTER_NAME" : character_name,
+		"MESSAGE" : message,
+		"AVATAR_IMAGE" : avatar_image,
+		"AVATAR_POSITION" : avatar_pos
+	})
+
+
+func next_dialog():
+	if not dialogue and text:
+		return
+	
+	if section_idx == dialogue.size():
+		dialog_ended.emit()
+		return
+	
+	var dialog_text = get_node(text) as RichTextLabel
+	
+	dialog_text.visible_ratio = 0.0
+	
+	var tween = create_tween()
+	tween.tween_property(
+		dialog_text,
+		"visible_ratio",
+		1.0,
+		0.8
+	)
+	
+	dialog_text.text = dialogue[section_idx]["MESSAGE"]
+	
+	section_idx += 1
+	

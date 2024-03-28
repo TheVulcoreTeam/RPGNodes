@@ -15,11 +15,21 @@ run/main_scene="res://main.tscn"
 config/features=PackedStringArray("4.2")
 config/icon="res://RPGNodes.png"
 
+[display]
+
+window/size/viewport_width=300
+window/size/viewport_height=300
+window/size/window_width_override=600
+window/size/window_height_override=600
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep_height"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/rpg_nodes/plugin.cfg")
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 environment/defaults/default_environment="res://default_env.tres"

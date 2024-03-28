@@ -1,0 +1,93 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1u683ed1cp3b"]
+
+[ext_resource type="Script" path="res://tests/dialog/RPGDialog/DialogExample.gd" id="1_4c0dl"]
+[ext_resource type="Texture2D" uid="uid://djrciiawsq1jf" path="res://art/Panel.png" id="1_v2clg"]
+[ext_resource type="FontFile" uid="uid://cyejmf344osl8" path="res://fonts/nokia/nokia.ttf" id="2_5n6tb"]
+[ext_resource type="Script" path="res://addons/rpg_nodes/nodes/RPGDialog.gd" id="4_kapv6"]
+
+[node name="DialogExample" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4c0dl")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control" type="Control" parent="VBox"]
+custom_minimum_size = Vector2(0, 240)
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Avatar" type="NinePatchRect" parent="VBox/HBox"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+texture = ExtResource("1_v2clg")
+region_rect = Rect2(0, 0, 8, 8)
+patch_margin_left = 2
+patch_margin_top = 2
+patch_margin_right = 2
+patch_margin_bottom = 2
+
+[node name="Margin" type="MarginContainer" parent="VBox/HBox/Avatar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Text" type="NinePatchRect" parent="VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("1_v2clg")
+region_rect = Rect2(0, 0, 8, 8)
+patch_margin_left = 2
+patch_margin_top = 2
+patch_margin_right = 2
+patch_margin_bottom = 2
+
+[node name="Margin" type="MarginContainer" parent="VBox/HBox/Text"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Text" type="RichTextLabel" parent="VBox/HBox/Text/Margin"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_5n6tb")
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+
+[node name="Next" type="Button" parent="VBox/HBox"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_5n6tb")
+text = "next"
+
+[node name="RPGDialog" type="Node" parent="."]
+script = ExtResource("4_kapv6")
+text = NodePath("../VBox/HBox/Text/Margin/Text")
+
+[connection signal="pressed" from="VBox/HBox/Next" to="." method="_on_next_pressed"]

@@ -125,12 +125,12 @@ var xp := 0:
 			while xp >= xp_required:
 				xp -= xp_required
 				
-				xp_added.emit(xp_required)
-				
 				if level < level_max:
 					level_up()
 				else:
 					self.message.emit("I can't level_up because my level is " + str(level_max))
+			
+			xp_added.emit(xp_required)
 		elif value == 0:
 			xp = 0
 	get:
