@@ -116,8 +116,10 @@ func next_dialog():
 		_prev_avatar_texture = dialogue[_section_idx]["AVATAR_TEXTURE"]
 		avatar_changed.emit()
 	
+	# Increase the index, for next section of dialog
 	_section_idx += 1
 
 
+## Reset index to start again the dialog section
 func reset_index():
 	_section_idx = 0

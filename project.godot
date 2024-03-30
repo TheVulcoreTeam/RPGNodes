@@ -24,6 +24,10 @@ window/size/window_height_override=600
 window/stretch/mode="canvas_items"
 window/stretch/aspect="keep_height"
 
+[editor]
+
+movie_writer/movie_file="/home/matiasvme/rpgnodes.avi"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/gut/plugin.cfg", "res://addons/rpg_nodes/plugin.cfg")

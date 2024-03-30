@@ -1,26 +1,25 @@
 extends Control
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	$RPGDialog.add_section(
 		"GameDev",
-		"¿Hola soy GameDev y tu que clase de animal eres?",
+		"Hello I am a GameDev and you what kind of animal you are?",
 		"res://tests/dialog/RPGDialog/gamedev.png"
 	)
 	$RPGDialog.add_section(
 		"Animal",
-		"¿Cómo que animal? que creido eres!!",
+		"What do you mean, animal? You're such a conceited animal!",
 		"res://tests/dialog/RPGDialog/animal.png"
 	)
 	$RPGDialog.add_section(
 		"GameDev",
-		"Sí eres un animal!! por que no eres GameDev!!",
+		"Yes you are a animal, because you're not a GameDev!",
 		"res://tests/dialog/RPGDialog/gamedev.png"
 	)
 	$RPGDialog.add_section(
 		"Animal",
-		"Eres un fanfarron como todos los GameDevs!!",
+		"You're a braggart like all GameDevs!!",
 		"res://tests/dialog/RPGDialog/animal.png"
 	)
 
