@@ -24,55 +24,72 @@ extends RPGNode
 
 class_name RPGDialog
 
+## Remember set that variable to use the dialogs
 @export_node_path("RichTextLabel")
 var text : NodePath
 
-# Posición del avatar
-enum AvatarPos {LEFT, RIGHT}
-var avatar_pos = AvatarPos.LEFT
+## Remember set that variable to use the dialogs
+@export_node_path("RichTextLabel")
+var title_name : NodePath
+
+## Remember set that variable to use the dialogs
+@export_node_path("TextureRect")
+var avatar : NodePath
 
 var dialogue := []
 
 var timer
 
 # Se cambia el trasmitter_name
-signal transmitter_name_changed
+signal title_name_changed()
 # Se cambia el avatar
-signal avatar_changed
+signal avatar_changed()
 # Pasa al siguiente texto
-signal text_changed
+signal text_changed()
 # Comienza el dialogo
-signal dialog_started
-signal section_ended
+signal dialog_started()
+signal section_ended()
 # Termina el dialogo
-signal dialog_ended
+signal dialog_ended()
 
 var next_pressed := false
 
-var section_idx := 0
+var _section_idx := 0
+var _prev_character_name := ""
+var _prev_avatar_texture := ""
 
-
-func add_section(character_name : String, message : String, avatar_image : TextureRect = null, avatar_position : AvatarPos = AvatarPos.LEFT):
+## add_section is used to add new dialog with name, message and optional avatar
+func add_section(character_name : String, message : String, avatar_image := ""):
 	dialogue.append({
 		"CHARACTER_NAME" : character_name,
 		"MESSAGE" : message,
-		"AVATAR_IMAGE" : avatar_image,
-		"AVATAR_POSITION" : avatar_pos
+		"AVATAR_TEXTURE" : avatar_image
 	})
 
-
+## next_dialog is used for start dialog or get_next dialog
 func next_dialog():
-	if not dialogue and text:
+	# If dialogue not exist or title_name is empty or text is empty send a message if debug is
+	# active
+	if not dialogue or title_name.is_empty() or text.is_empty():
+		self.message.emit("Some of the properties are not assigned or no dialogue exists.")
 		return
 	
-	if section_idx == dialogue.size():
+	if _section_idx == 0:
+		dialog_started.emit()
+	
+	# If dialog ended emit the signal dialog_ended
+	if _section_idx == dialogue.size():
 		dialog_ended.emit()
 		return
 	
+	# Set dialog_text and title_tex as nodes (RichTextLabel)
 	var dialog_text = get_node(text) as RichTextLabel
+	var title_text = get_node(title_name) as RichTextLabel
 	
+	# Visible ratio of dialog text, reset for each iteration
 	dialog_text.visible_ratio = 0.0
 	
+	# Animation effect to dialog
 	var tween = create_tween()
 	tween.tween_property(
 		dialog_text,
@@ -81,7 +98,26 @@ func next_dialog():
 		0.8
 	)
 	
-	dialog_text.text = dialogue[section_idx]["MESSAGE"]
+	# Asign the current message and character title to the RichTextLabels
+	dialog_text.text = dialogue[_section_idx]["MESSAGE"]
+	title_text.text = dialogue[_section_idx]["CHARACTER_NAME"]
 	
-	section_idx += 1
+	# Detect if character name is changed and emit a signal if is changed
+	if _prev_character_name != dialogue[_section_idx]["MESSAGE"]:
+		_prev_character_name = dialogue[_section_idx]["MESSAGE"]
+		title_name_changed.emit()
 	
+	if dialogue[_section_idx]["AVATAR_TEXTURE"]:
+		var avatar_image = get_node(avatar) as TextureRect
+		avatar_image.texture = load(dialogue[_section_idx]["AVATAR_TEXTURE"])
+	
+	# Detect if avatar texture is changed and emit a signal if is changed
+	if _prev_avatar_texture != dialogue[_section_idx]["AVATAR_TEXTURE"]:
+		_prev_avatar_texture = dialogue[_section_idx]["AVATAR_TEXTURE"]
+		avatar_changed.emit()
+	
+	_section_idx += 1
+
+
+func reset_index():
+	_section_idx = 0

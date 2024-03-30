@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1u683ed1cp3b"]
+[gd_scene load_steps=6 format=3 uid="uid://c1u683ed1cp3b"]
 
 [ext_resource type="Script" path="res://tests/dialog/RPGDialog/DialogExample.gd" id="1_4c0dl"]
 [ext_resource type="Texture2D" uid="uid://djrciiawsq1jf" path="res://art/Panel.png" id="1_v2clg"]
 [ext_resource type="FontFile" uid="uid://cyejmf344osl8" path="res://fonts/nokia/nokia.ttf" id="2_5n6tb"]
 [ext_resource type="Script" path="res://addons/rpg_nodes/nodes/RPGDialog.gd" id="4_kapv6"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0lj7e"]
+load_path = "res://.godot/imported/Panel.png-63bdad50352b316ccac0f7099f86695e.ctex"
 
 [node name="DialogExample" type="Control"]
 layout_mode = 3
@@ -22,13 +25,42 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Control" type="Control" parent="VBox"]
-custom_minimum_size = Vector2(0, 240)
+[node name="Name" type="NinePatchRect" parent="VBox"]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("CompressedTexture2D_0lj7e")
+region_rect = Rect2(0, 0, 8, 8)
+patch_margin_left = 2
+patch_margin_top = 2
+patch_margin_right = 2
+patch_margin_bottom = 2
 
-[node name="HBox" type="HBoxContainer" parent="VBox"]
+[node name="Margin" type="MarginContainer" parent="VBox/Name"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Text" type="RichTextLabel" parent="VBox/Name/Margin"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_5n6tb")
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+
+[node name="Control" type="Control" parent="VBox"]
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="HBox" type="HBoxContainer" parent="VBox"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
 
 [node name="Avatar" type="NinePatchRect" parent="VBox/HBox"]
 custom_minimum_size = Vector2(40, 0)
@@ -51,6 +83,10 @@ theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
+
+[node name="AvatarImage" type="TextureRect" parent="VBox/HBox/Avatar/Margin"]
+layout_mode = 2
+stretch_mode = 3
 
 [node name="Text" type="NinePatchRect" parent="VBox/HBox"]
 layout_mode = 2
@@ -80,14 +116,18 @@ theme_override_fonts/normal_font = ExtResource("2_5n6tb")
 theme_override_font_sizes/normal_font_size = 8
 bbcode_enabled = true
 
-[node name="Next" type="Button" parent="VBox/HBox"]
-custom_minimum_size = Vector2(40, 0)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_5n6tb")
-text = "next"
+[node name="Next" type="TextureButton" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="RPGDialog" type="Node" parent="."]
 script = ExtResource("4_kapv6")
 text = NodePath("../VBox/HBox/Text/Margin/Text")
+title_name = NodePath("../VBox/Name/Margin/Text")
+avatar = NodePath("../VBox/HBox/Avatar/Margin/AvatarImage")
 
-[connection signal="pressed" from="VBox/HBox/Next" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="Next" to="." method="_on_next_pressed"]
