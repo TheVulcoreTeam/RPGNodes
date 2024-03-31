@@ -40,17 +40,18 @@ var dialogue := []
 
 var timer
 
-# Se cambia el trasmitter_name
-signal title_name_changed()
-# Se cambia el avatar
-signal avatar_changed()
-# Pasa al siguiente texto
-signal text_changed()
-# Comienza el dialogo
+## When the character name is changed
+signal character_name_changed(old_name, new_name)
+## Avatar changed
+signal avatar_changed(old_image, new_image)
+## Dialog started
 signal dialog_started()
-signal section_ended()
-# Termina el dialogo
+## Section ended, send the index of section
+signal section_ended(idx : int)
+## Dialog ended
 signal dialog_ended()
+## Clear dialog
+signal dialog_cleaned
 
 var next_pressed := false
 
@@ -104,8 +105,8 @@ func next_dialog():
 	
 	# Detect if character name is changed and emit a signal if is changed
 	if _prev_character_name != dialogue[_section_idx]["MESSAGE"]:
+		character_name_changed.emit(_prev_character_name, dialogue[_section_idx]["MESSAGE"])
 		_prev_character_name = dialogue[_section_idx]["MESSAGE"]
-		title_name_changed.emit()
 	
 	if dialogue[_section_idx]["AVATAR_TEXTURE"]:
 		var avatar_image = get_node(avatar) as TextureRect
@@ -113,13 +114,19 @@ func next_dialog():
 	
 	# Detect if avatar texture is changed and emit a signal if is changed
 	if _prev_avatar_texture != dialogue[_section_idx]["AVATAR_TEXTURE"]:
+		avatar_changed.emit(_prev_avatar_texture, dialogue[_section_idx]["AVATAR_TEXTURE"])
 		_prev_avatar_texture = dialogue[_section_idx]["AVATAR_TEXTURE"]
-		avatar_changed.emit()
 	
 	# Increase the index, for next section of dialog
 	_section_idx += 1
+	
+	section_ended.emit(_section_idx)
 
 
 ## Reset index to start again the dialog section
 func reset_index():
 	_section_idx = 0
+
+
+func clear_dialog():
+	dialogue.clear()

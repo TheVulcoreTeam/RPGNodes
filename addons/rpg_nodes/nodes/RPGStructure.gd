@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-extends "RPGElement.gd"
+extends RPGNode
 class_name RPGStructure
 
 # TODO
