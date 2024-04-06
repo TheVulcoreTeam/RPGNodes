@@ -17,11 +17,8 @@ config/icon="res://RPGNodes.png"
 
 [display]
 
-window/size/viewport_width=300
-window/size/viewport_height=300
-window/size/window_width_override=600
-window/size/window_height_override=600
-window/stretch/mode="canvas_items"
+window/size/viewport_width=1024
+window/size/viewport_height=720
 window/stretch/aspect="keep_height"
 
 [editor]

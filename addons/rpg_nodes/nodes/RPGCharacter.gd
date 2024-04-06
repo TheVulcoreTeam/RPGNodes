@@ -41,6 +41,10 @@ signal energy_added(amount)
 signal energy_removed(amount)
 signal energy_is_full()
 signal energy_without()
+signal stamine_added(amount)
+signal stamine_removed(amount)
+signal stamine_is_full()
+signal stamine_without()
 
 # TODO: Falta implementar los métodos add_defense, remove_defense
 # signal add_defense # TODO
@@ -106,6 +110,39 @@ signal energy_without()
 	get:
 		return energy_max
 
+@export var stamine := 20.0:
+	set(value):
+		var old_stamine := stamine
+		var new_stamine := clamp(value, 0, stamine_max)
+		
+		if old_stamine < new_stamine:
+			stamine = new_stamine
+			stamine_added.emit(value)
+		else:
+			stamine = new_stamine
+			stamine_removed.emit(value)
+		
+		if new_stamine == stamine_max:
+			stamine = new_stamine
+			stamine_is_full.emit()
+		
+		if new_stamine <= 0:
+			stamine_without.emit()
+	get:
+		return stamine
+
+@export var stamine_max := 20.0:
+	set(value):
+		stamine_max = clamp(value, 1.0, MAX_VALUE)
+	get:
+		return stamine_max
+
+@export var stamine_regen_per_second := 2.0:
+	set(value):
+		stamine_regen_per_second = clamp(value, 1.0, stamine_max)
+	get:
+		return stamine_regen_per_second
+
 # 0% de defense
 # @export var defense_rate := 0
 # TODO: Implementar escudo
@@ -157,6 +194,17 @@ var xp_drop_amount := 0
 # la razón es que a veces se da experiencia al jugador cuando
 # no se esta en la pantalla de juego. 
 var is_dead := false
+
+# Is util for stamine
+var time := 0.0
+
+
+func _process(delta):
+	time += delta
+	
+	if time >= 1:
+		time = 0.0
+		stamine += stamine_regen_per_second
 
 
 func revive(custom_hp := 1, revive_with_max_hp := true):
