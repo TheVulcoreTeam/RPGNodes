@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://c1u683ed1cp3b"]
 
-[ext_resource type="Script" path="res://tests/dialog/RPGDialog/DialogExample.gd" id="1_4c0dl"]
+[ext_resource type="Script" uid="uid://cvmtdcgfrdgap" path="res://tests/dialog/RPGDialog/DialogExample.gd" id="1_4c0dl"]
 [ext_resource type="Texture2D" uid="uid://djrciiawsq1jf" path="res://art/Panel.png" id="1_v2clg"]
 [ext_resource type="FontFile" uid="uid://cyejmf344osl8" path="res://fonts/nokia/nokia.ttf" id="2_5n6tb"]
-[ext_resource type="Script" path="res://addons/rpg_nodes/nodes/RPGDialog.gd" id="4_kapv6"]
+[ext_resource type="Script" uid="uid://uiy2bmivxngb" path="res://addons/rpg_nodes/nodes/RPGDialog.gd" id="4_kapv6"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0lj7e"]
 load_path = "res://.godot/imported/Panel.png-63bdad50352b316ccac0f7099f86695e.ctex"

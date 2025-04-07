@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b036f6cqpqpd5"]
 
-[ext_resource type="Script" path="res://addons/rpg_nodes/nodes/RPGCharacter.gd" id="1_xg10u"]
+[ext_resource type="Script" uid="uid://d6kad5ff8ciw" path="res://addons/rpg_nodes/nodes/RPGCharacter.gd" id="1_xg10u"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
