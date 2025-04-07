@@ -2,7 +2,7 @@
 #
 # RPGNodes
 #
-# Copyright (c) 2018 - 2024 Matías Muñoz Espinoza
+# Copyright (c) 2018 - 2025 Matías Muñoz Espinoza
 # Copyright (c) 2018 Jovani Pérez
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -164,6 +164,10 @@ var xp := 0:
 				
 				if level < level_max:
 					level_up()
+					print("level: ", level)
+					print("xp: ", xp)
+					print("xp_total: ", xp_total)
+					print("xp_required: ", xp_required)
 				else:
 					self.message.emit("I can't level_up because my level is " + str(level_max))
 			
