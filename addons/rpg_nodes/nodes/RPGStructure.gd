@@ -25,4 +25,3 @@ extends RPGNode
 class_name RPGStructure
 
 # TODO
-

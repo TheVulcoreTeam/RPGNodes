@@ -181,7 +181,7 @@ var xp_required := 0:
 	set(value):
 		xp_required = value
 	get:
-		return int(round(pow(level, 1.8) + level * 4))
+		return int(round(pow(clamp(level, 1, level_max), 1.8) + clamp(level, 1, level_max) * 4))
 
 var xp_total := 0:
 	set(value):
@@ -234,7 +234,7 @@ func level_up():
 
 
 func xp_required_to_level(_level) -> int:
-	return int(round(pow(_level, 1.8) + _level * 4))
+	return int(round(pow(clamp(level, 1, level_max), 1.8) + clamp(level, 1, level_max) * 4))
 
 
 func reset_stats():
