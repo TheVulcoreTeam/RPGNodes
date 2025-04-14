@@ -46,17 +46,7 @@ signal stamine_removed(amount)
 signal stamine_is_full()
 signal stamine_without()
 
-# TODO: Falta implementar los métodos add_defense, remove_defense
-# signal add_defense # TODO
-# signal remove_defense # TODO
-
 @export var character_name := ""
-
-@export var level := 0:
-	set(value):
-		level = clamp(value, 0, level_max)
-	get:
-		return level
 
 @export var level_max := 30:
 	set(value):
@@ -143,53 +133,17 @@ signal stamine_without()
 	get:
 		return stamine_regen_per_second
 
-# 0% de defense
-# @export var defense_rate := 0
-# TODO: Implementar escudo
-# export (int) var shield
-
 @export var attack := 1
 
-var xp := 0:
-	set(value):
-		if is_dead:
-			return
-		
-		if value > 0:
-			xp_total += value
-			xp += value
-			
-			while xp >= xp_required:
-				xp -= xp_required
-				
-				if level < level_max:
-					level_up()
-					print("level: ", level)
-					print("xp: ", xp)
-					print("xp_total: ", xp_total)
-					print("xp_required: ", xp_required)
-				else:
-					self.message.emit("I can't level_up because my level is " + str(level_max))
-			
-			xp_added.emit(xp_required)
-		elif value == 0:
-			xp = 0
-	get:
-		return xp
+# Constante base que afecta la progresión
+var experience_base := 100.0
+# Factor que ajusta la curva
+var experience_factor := 1.5
 
-var xp_required := 0:
-	set(value):
-		xp_required = value
-	get:
-		return int(round(pow(clamp(level, 1, level_max), 1.8) + clamp(level, 1, level_max) * 4))
-
-var xp_total := 0:
-	set(value):
-		xp_total = value
-	get:
-		return xp_total
-
-var xp_drop_amount := 0
+# Variable para almacenar la experiencia actual
+var current_exp := 0.0
+# Nivel actual del jugador
+var current_level := 1
 
 # Previene que muera más de una vez. Esto hace que el player
 # no pueda ganar/perder vida/energía cuando esta muerto.
@@ -203,7 +157,7 @@ var is_dead := false
 var time := 0.0
 
 
-func _process(delta):
+func _process(delta) -> void:
 	time += delta
 	
 	if time >= 1:
@@ -211,7 +165,7 @@ func _process(delta):
 		stamine += stamine_regen_per_second
 
 
-func revive(custom_hp := 1, revive_with_max_hp := true):
+func revive(custom_hp := 1, revive_with_max_hp := true) -> void:
 	if not is_dead:
 		message.emit("You can't revive someone alive")
 		return
@@ -226,19 +180,50 @@ func revive(custom_hp := 1, revive_with_max_hp := true):
 	revived.emit()
 
 
-func level_up():
-	level += 1
-	xp_required = xp_required_to_level(level + 1)
+# Calcula la experiencia necesaria para alcanzar un nivel específico
+func get_exp_for_level(level: int) -> float:
+	# Usando sqrt para crear una curva de crecimiento
+	return experience_base * pow(level, experience_factor) * sqrt(level)
+
+
+# Calcula la experiencia total necesaria hasta el nivel actual
+func get_total_exp_to_current_level() -> float:
+	var total_exp = 0.0
+	for lvl in range(1, current_level):
+		total_exp += get_exp_for_level(lvl)
+	return total_exp
+
+
+# Experiencia necesaria para el siguiente nivel
+func get_exp_to_next_level() -> float:
+	return get_exp_for_level(current_level)
+
+
+# Agrega experiencia y sube de nivel si es necesario
+func add_experience(amount: float) -> void:
+	current_exp += amount
 	
-	level_increased.emit(level)
+	# Comprueba si se debe subir de nivel
+	while current_exp >= get_exp_to_next_level():
+		current_exp -= get_exp_to_next_level()
+		level_up()
 
 
-func xp_required_to_level(_level) -> int:
-	return int(round(pow(clamp(level, 1, level_max), 1.8) + clamp(level, 1, level_max) * 4))
+# Función llamada al subir de nivel
+func level_up() -> void:
+	current_level += 1
+	
+	# Emitir señal o llamar a otras funciones cuando el jugador sube de nivel
+	print("¡Subiste al nivel " + str(current_level) + "!")
+	# Aquí puedes emitir una señal para actualizar la UI
+	# emit_signal("level_up", current_level)
 
 
-func reset_stats():
-	level = 0
-	xp_required = 0
-	xp_total = 0
-	xp = 0
+# Retorna el porcentaje de progreso hacia el siguiente nivel (0.0 - 1.0)
+func get_level_progress() -> float:
+	return current_exp / get_exp_to_next_level()
+
+
+func reset_stats() -> void:
+	current_level = 0
+	current_exp = 0.0

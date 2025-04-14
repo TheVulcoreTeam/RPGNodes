@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2018 - 2024 Matías Muñoz Espinoza
+# Copyright (c) 2018 - 2025 Matías Muñoz Espinoza
 # Copyright (c) 2018 Jovani Pérez
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
