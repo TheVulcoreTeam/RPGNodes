@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://8nu0g74h8nmx"
-path="res://.godot/imported/RPGHelper.png-bd93b60e210a698e7a761386a62d8eca.ctex"
+uid="uid://yfnewf8vovjq"
+path="res://.godot/imported/RPGActor.png-f77c07b8248b244d4b9820188fab0415.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/rpg_nodes/icons/RPGHelper.png"
-dest_files=["res://.godot/imported/RPGHelper.png-bd93b60e210a698e7a761386a62d8eca.ctex"]
+source_file="res://addons/rpg_nodes/icons/RPGActor.png"
+dest_files=["res://.godot/imported/RPGActor.png-f77c07b8248b244d4b9820188fab0415.ctex"]
 
 [params]
 

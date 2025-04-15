@@ -6,7 +6,7 @@ var character: RPGCharacter
 func before_each():
 	# Configurar el entorno de prueba antes de cada test
 	character = RPGCharacter.new()
-	character.character_name = "Test Character"
+	character.actor_name = "Test Character"
 	add_child(character)
 
 
@@ -183,7 +183,7 @@ func test_reset_stats():
 	character.current_level = 10
 	character.current_exp = 150.0
 	
-	character.reset_stats()
+	character.reset_level_stats()
 	
 	assert_eq(character.current_level, 0, "El nivel actual debe reiniciarse a 0")
 	assert_eq(character.current_exp, 0.0, "La experiencia debe reiniciarse a 0")
