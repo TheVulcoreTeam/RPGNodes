@@ -20,6 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+@icon("res://addons/rpg_nodes/icons/RPGEnemy.png")
+
 extends RPGActor
 
 # Energy or mana
