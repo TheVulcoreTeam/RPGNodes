@@ -1,7 +1,5 @@
 # MIT License
 #
-# RPGNodes
-#
 # Copyright (c) 2018 - 2025 Matías Muñoz Espinoza
 # Copyright (c) 2018 Jovani Pérez
 #
@@ -23,20 +21,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-extends RPGNode
+extends RPGActor
 
 class_name RPGCharacter
 
-const MAX_VALUE = 100000
-
 signal level_increased(new_level)
 signal xp_added(amount)
-signal xp_droped(amount)
-signal hp_added(amount)
-signal hp_removed(amount)
-signal hp_is_full()
-signal died()
-signal revived()
 signal energy_added(amount)
 signal energy_removed(amount)
 signal energy_is_full()
@@ -46,46 +36,12 @@ signal stamine_removed(amount)
 signal stamine_is_full()
 signal stamine_without()
 
-@export var character_name := ""
 
 @export var level_max := 30:
 	set(value):
 		level_max = value
 	get:
 		return level_max
-
-# Vitality
-@export var hp := 20:
-	set(value):
-		if not is_dead:
-			var old_hp := hp
-			var new_hp := clamp(value, 0, hp_max)
-			
-			if old_hp < new_hp:
-				hp = new_hp
-				hp_added.emit(value)
-			else:
-				hp = new_hp
-				hp_removed.emit(value)
-			
-			if new_hp == hp_max:
-				hp = new_hp
-				hp_is_full.emit()
-			
-			if new_hp == 0:
-				is_dead = true
-				hp = new_hp
-				died.emit()
-		else:
-			self.message.emit("I am die: " + name + " " + character_name)
-	get:
-		return hp
-
-@export var hp_max := 20:
-	set(value):
-		hp_max = clamp(value, 1, MAX_VALUE)
-	get:
-		return hp_max
 
 # Energy or mana
 @export var energy := 20:
@@ -133,7 +89,7 @@ signal stamine_without()
 	get:
 		return stamine_regen_per_second
 
-@export var attack := 1
+@export var base_attack := 1
 
 # Constante base que afecta la progresión
 var experience_base := 100.0
@@ -144,14 +100,6 @@ var experience_factor := 1.5
 var current_exp := 0.0
 # Nivel actual del jugador
 var current_level := 1
-
-# Previene que muera más de una vez. Esto hace que el player
-# no pueda ganar/perder vida/energía cuando esta muerto.
-# Para revivirlo se debe utilizar revive().
-# El character si puede ganar experiencia cuando esta muerto,
-# la razón es que a veces se da experiencia al jugador cuando
-# no se esta en la pantalla de juego. 
-var is_dead := false
 
 # Is util for stamine
 var time := 0.0
@@ -205,7 +153,10 @@ func add_experience(amount: float) -> void:
 	
 	# Comprueba si se debe subir de nivel
 	while current_exp >= get_exp_to_next_level():
+		xp_added.emit(get_exp_to_next_level())
+		
 		current_exp -= get_exp_to_next_level()
+		
 		level_up()
 
 
@@ -213,10 +164,8 @@ func add_experience(amount: float) -> void:
 func level_up() -> void:
 	current_level += 1
 	
-	# Emitir señal o llamar a otras funciones cuando el jugador sube de nivel
-	print("¡Subiste al nivel " + str(current_level) + "!")
 	# Aquí puedes emitir una señal para actualizar la UI
-	# emit_signal("level_up", current_level)
+	level_increased.emit(current_level)
 
 
 # Retorna el porcentaje de progreso hacia el siguiente nivel (0.0 - 1.0)
@@ -224,6 +173,6 @@ func get_level_progress() -> float:
 	return current_exp / get_exp_to_next_level()
 
 
-func reset_stats() -> void:
+func reset_level_stats() -> void:
 	current_level = 0
 	current_exp = 0.0

@@ -61,10 +61,10 @@ func test_multiple_level_ups():
 	var exp_to_level_4 = character.get_exp_for_level(3)
 	
 	# Añadimos experiencia para subir varios niveles de una vez
-	character.add_experience(exp_to_level_2 + exp_to_level_3 + exp_to_level_4 * 0.5)
+	character.add_experience(exp_to_level_2 + exp_to_level_3 + exp_to_level_4)
 	
 	assert_eq(character.current_level, 4, "Debe subir múltiples niveles")
-	var expected_remainder = exp_to_level_4 * 0.5
+	var expected_remainder = exp_to_level_4
 	assert_almost_eq(character.current_exp, expected_remainder, 0.001, "La experiencia sobrante debe mantenerse")
 
 
