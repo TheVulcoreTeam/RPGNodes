@@ -1,6 +1,6 @@
 # RPGNodes [WIP]
 
-![logo](images/RPGNodes.png)
+![logo](RPGNodes.png)
 
 [Work In Progress] RPGNodes es un addons que facilita la lógica para crear juegos RPG a través de nodos personalizados.
 
@@ -14,19 +14,19 @@ Por ejemplo: Con el nodo RPGCharacter podrá representar la lógica de un person
 
 El proyecto es poco usable ya que hay nodos que no estan terminados, la gran mayoría.
 
-![](addons/rpg_elements/icons/RPGCharacter.png) **RPGCharacter:** Testeado!! (Muy Usable)
+![](addons/rpg_nodes/icons/RPGCharacter.png) **RPGCharacter:** Testeado!! (Muy Usable)
 
-![](addons/rpg_elements/icons/RPGDialog.png) **RPGDialog:** No Usable
+![](addons/rpg_nodes/icons/RPGDialog.png) **RPGDialog:** No Usable
 
-![](addons/rpg_elements/icons/RPGInventory.png) **RPGInventory:** No Usable
+![](addons/rpg_nodes/icons/RPGInventory.png) **RPGInventory:** No Usable
 
-![](addons/rpg_elements/icons/RPGItem.png) **RPGItem:** No Usable
+![](addons/rpg_nodes/icons/RPGItem.png) **RPGItem:** No Usable
 
-![](addons/rpg_elements/icons/RPGStats.png) **RPGStats:** No Usable
+![](addons/rpg_nodes/icons/RPGStats.png) **RPGStats:** No Usable
 
-![](addons/rpg_elements/icons/RPGWeightInventory.png) **RPGWeightInventory:** No Usable
+![](addons/rpg_nodes/icons/RPGWeightInventory.png) **RPGWeightInventory:** No Usable
 
-![](addons/rpg_elements/icons/RPGSlotInventory.png) **RPGSlotInventory:** No Usable
+![](addons/rpg_nodes/icons/RPGSlotInventory.png) **RPGSlotInventory:** No Usable
 
 ## Instalación y uso
 

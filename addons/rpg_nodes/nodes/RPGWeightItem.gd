@@ -1,7 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2018 - 2025 Matías Muñoz Espinoza
-# Copyright (c) 2018 Jovani Pérez
+# Copyright (c) 2025 Matías Muñoz Espinoza
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +20,47 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-@icon("res://addons/rpg_nodes/icons/RPGInventory.png")
+# WIP: work in progress
+
+@icon("res://addons/rpg_nodes/icons/RPGItem.png")
 
 extends RPGNode
 
-class_name RPGInventory
+class_name RPGWeightItem
 
-# TODO
+signal item_name_changed(new_name)
+signal description_changed(new_description)
+signal weight_updated(new_weight)
+signal weight_decreased()
+signal weight_increased()
+
+
+var item_name := "":
+	set(value):
+		item_name = value
+		item_name_changed.emit(value)
+	get:
+		return item_name
+
+# Item description
+var description := "":
+	set(value):
+		description = value
+		description_changed.emit(value)
+	get:
+		return description
+
+# Item Weight in the inventory
+var weight := 1:
+	set(value):
+		if weight > value:
+			weight_increased.emit()
+		elif weight < value:
+			weight_decreased.emit()
+		
+		weight = value
+		weight_updated.emit(value)
+		
+
+var buy_price := 2
+var sell_price := 1

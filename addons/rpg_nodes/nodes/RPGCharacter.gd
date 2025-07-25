@@ -28,15 +28,15 @@ extends RPGActor
 class_name RPGCharacter
 
 signal level_increased(new_level)
-signal xp_added(amount)
-signal energy_added(amount)
-signal energy_removed(amount)
-signal energy_is_full()
-signal energy_without()
-signal stamine_added(amount)
-signal stamine_removed(amount)
-signal stamine_is_full()
-signal stamine_without()
+signal experience_gained(amount)
+signal energy_replenished(amount)
+signal energy_used(amount)
+signal energy_reached_full()
+signal energy_depleted() # Emitted when energy drops to zero
+signal stamina_replenished(amount)
+signal stamina_used(amount)
+signal stamina_reached_full()
+signal stamina_depleted() # Emitted when stamina is completely exhausted
 
 
 @export var level_max := 30:
@@ -65,17 +65,17 @@ signal stamine_without()
 		
 		if old_stamine < new_stamine:
 			stamine = new_stamine
-			stamine_added.emit(value)
+			stamina_replenished.emit(value)
 		else:
 			stamine = new_stamine
-			stamine_removed.emit(value)
+			stamina_used.emit(value)
 		
 		if new_stamine == stamine_max:
 			stamine = new_stamine
-			stamine_is_full.emit()
+			stamina_reached_full.emit()
 		
 		if new_stamine <= 0:
-			stamine_without.emit()
+			stamina_depleted.emit()
 	get:
 		return stamine
 
@@ -106,6 +106,9 @@ var current_level := 1
 # Is util for stamine
 var time := 0.0
 
+# TODO: Defence
+# (factor_def/(current_def+factor_def))*damage
+
 
 func _process(delta) -> void:
 	time += delta
@@ -117,7 +120,7 @@ func _process(delta) -> void:
 
 func revive(custom_hp := 1, revive_with_max_hp := true) -> void:
 	if not is_dead:
-		message.emit("You can't revive someone alive")
+		self.message_sent.emit("You can't revive someone alive")
 		return
 	
 	is_dead = false
@@ -155,7 +158,7 @@ func add_experience(amount: float) -> void:
 	
 	# Comprueba si se debe subir de nivel
 	while current_exp >= get_exp_to_next_level():
-		xp_added.emit(get_exp_to_next_level())
+		experience_gained.emit(get_exp_to_next_level())
 		
 		current_exp -= get_exp_to_next_level()
 		

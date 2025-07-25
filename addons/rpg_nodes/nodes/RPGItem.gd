@@ -21,8 +21,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+# WIP: work in progress
+
 @icon("res://addons/rpg_nodes/icons/RPGItem.png")
 
 extends RPGNode
 
-# TODO
+class_name RPGItem
+
+
+var item_name := ""
+# Item description
+var description := ""
+# Item value
+var value := 1

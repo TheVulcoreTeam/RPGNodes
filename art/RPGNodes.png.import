@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3cmqcd780ecr"
-path="res://.godot/imported/RPGNodes_Full.png-c8b891df7922c25cad89f666767ecbdc.ctex"
+uid="uid://bmel2oql2ei50"
+path="res://.godot/imported/RPGNodes.png-e5fa44cde7428ee9de11a6605955dae5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/RPGNodes_Full.png"
-dest_files=["res://.godot/imported/RPGNodes_Full.png-c8b891df7922c25cad89f666767ecbdc.ctex"]
+source_file="res://art/RPGNodes.png"
+dest_files=["res://.godot/imported/RPGNodes.png-e5fa44cde7428ee9de11a6605955dae5.ctex"]
 
 [params]
 

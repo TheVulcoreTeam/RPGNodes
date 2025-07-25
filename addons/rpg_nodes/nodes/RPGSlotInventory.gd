@@ -1,6 +1,7 @@
 # MIT License
 #
 # Copyright (c) 2018 - 2025 Matías Muñoz Espinoza
+# Copyright (c) 2018 Jovani Pérez
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,17 +21,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-extends Node
+# WIP: work in progress
 
-class_name RPGNode
+@icon("res://addons/rpg_nodes/icons/RPGSlotInventory.png")
 
-signal message_sent(message)
+extends RPGNode
 
-@export var prefix := '[color="blue"][RPGNodes] [/color] '
+class_name RPGSlotInventory
 
-func _ready() -> void:
-	message_sent.connect(_print)
+signal inventory_removed()
+signal inventory_added()
+signal inventory_updated()
 
 
-func _print(message : String):
-	print_rich(prefix + '[color="yellow"] ' + message + '[/color]')
+var _inventory : Array[RPGItem] = []
+
+func add_item():
+	pass
+
+
+func get_item():
+	pass
+
+
+func remove_item(item_name : String):
+	pass

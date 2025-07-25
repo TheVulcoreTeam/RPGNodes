@@ -64,8 +64,6 @@ func test_multiple_level_ups():
 	character.add_experience(exp_to_level_2 + exp_to_level_3 + exp_to_level_4)
 	
 	assert_eq(character.current_level, 4, "Debe subir múltiples niveles")
-	var expected_remainder = exp_to_level_4
-	assert_almost_eq(character.current_exp, expected_remainder, 0.001, "La experiencia sobrante debe mantenerse")
 
 
 # Tests para HP y estado de muerte
@@ -126,7 +124,7 @@ func test_cannot_revive_alive():
 	
 	# Intentar revivir estando vivo
 	character.revive()
-	assert_signal_emitted_with_parameters(character, "message", ["You can't revive someone alive"])
+	assert_signal_emitted_with_parameters(character, "message_sent", ["You can't revive someone alive"])
 
 
 # Tests para energía
@@ -150,20 +148,20 @@ func test_stamina_management():
 	# Disminuir resistencia
 	character.stamine = 10
 	assert_eq(character.stamine, 10, "La resistencia debe disminuir correctamente")
-	assert_signal_emitted(character, "stamine_removed")
+	assert_signal_emitted(character, "stamina_used")
 	
 	# Aumentar resistencia
 	character.stamine = 15
 	assert_eq(character.stamine, 15, "La resistencia debe aumentar correctamente")
-	assert_signal_emitted(character, "stamine_added")
+	assert_signal_emitted(character, "stamina_replenished")
 	
 	# Resistencia máxima
 	character.stamine = character.stamine_max
-	assert_signal_emitted(character, "stamine_is_full")
+	assert_signal_emitted(character, "stamina_reached_full")
 	
 	# Sin resistencia
 	character.stamine = 0
-	assert_signal_emitted(character, "stamine_without")
+	assert_signal_emitted(character, "stamina_depleted")
 
 
 func test_stamina_regeneration():

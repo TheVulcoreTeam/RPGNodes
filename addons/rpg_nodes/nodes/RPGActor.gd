@@ -59,7 +59,7 @@ signal revived()
 				hp = new_hp
 				died.emit()
 		else:
-			self.message.emit("I am die: " + name + " " + actor_name)
+			self._print("I am die: " + name + " " + actor_name)
 	get:
 		return hp
 
