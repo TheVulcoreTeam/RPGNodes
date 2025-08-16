@@ -50,7 +50,11 @@ var _weight_inventory : Array[RPGWeightItem] = []:
 
 var weight := 0:
 	set(value):
-		pass
+		weight = value
+		weight_changed.emit(weight)
+		
+		if weight == max_weight:
+			weight_filled.emit()
 	get:
 		return weight
 
@@ -67,10 +71,6 @@ func add_item(item : RPGWeightItem):
 	if item.weight + weight <= max_weight:
 		_weight_inventory.append(item)
 		weight += item.weight
-		weight_changed.emit(weight)
-		
-		if weight == max_weight:
-			weight_filled.emit()
 	else:
 		self._print(
 			str(
@@ -81,32 +81,23 @@ func add_item(item : RPGWeightItem):
 			)
 		)
 
-
-# Get item by item_name
-func get_item(item_name : String) -> Array[RPGWeightItem]:
-	var items : Array[RPGWeightItem]
-	
+# Obtenemos un item del inventario dependiendo de us uuid, si no lo obtenemos
+# devuelve null
+func get_item(uuid : int) -> RPGWeightItem:
 	for item : RPGWeightItem in _weight_inventory:
-		if item.item_name == item_name:
-			items.append(item)
+		if item.get_instance_id() == uuid:
+			return item
 	
-	return items
+	return null
 
 
-# Remove the first item by item_name (only one item)
-func remove_item(item_name : String):
-	for item in _weight_inventory:
-		if item.item_name == item_name:
-			weight -= item.weight
-			_weight_inventory.remove_at(_weight_inventory.find(item))
-			weight_changed.emit(weight)
-			break
-
-
-# Remove all items with item_name
-func remove_all_item(item_name : String):
-	for item in _weight_inventory:
-		if item.item_name == item_name:
-			weight -= item.weight
-			_weight_inventory.remove_at(_weight_inventory.find(item))
-			weight_changed.emit(weight)
+# Remueve un item dependiendo de su uuid, si lo remueve devuelve true y si no
+# devuelve false.
+func remove_item(uuid : int) -> bool:
+	for idx : int in _weight_inventory.size():
+		if _weight_inventory[idx].get_instance_id() == uuid:
+			weight -= _weight_inventory[idx].weight
+			_weight_inventory.remove_at(idx)
+			return true
+	
+	return false
