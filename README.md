@@ -2,51 +2,59 @@
 
 ![logo](RPGNodes.png)
 
-RPGNodes es un addons que facilita la lógica para crear juegos RPG a través de nodos personalizados.
+**RPGNodes** is an addon that simplifies logic for building RPG games using custom nodes.
 
-## Resumen
+## Summary
 
-RPGNodes es una solución genérica a la lógica que presentan los juegos RPG.
+RPGNodes provides a generic solution for the typical logic found in RPGs.  
+For example:
 
-Por ejemplo: Con el nodo RPGCharacter podrá representar la lógica de un personaje, como podría ser el añadirle experiencia, vida, energía o mana; Con el nodo RPGItem o RPGWeightItem podrá representar un item del juego, tiene todas las características comúnes de un item (item_name, description, amount, buy_price, sell_price, etc.); RGPWeightInventory es para almacenar y tratar items con peso, es decir que cada item puede tener diferente peso
+* **`RPGCharacter`** can represent a character’s logic – adding experience, health, energy or mana.
+* **`RPGItem`** or **`RPGWeightItem`** represents an item with common attributes (item_name, description, amount, buy_price, sell_price, etc.).
+* **`RGPWeightInventory`** stores and manages items that have weight, meaning each item can have a different weight.
 
-## Estado del proyecto
+## Project Status
 
-El proyecto si se puede usar, pero hay nodos que no están completos aún. Hay test unitarios con [GUT](https://github.com/bitwes/Gut/)
+The project is usable, though some nodes are still incomplete.  
+Unit tests are written with [GUT](https://github.com/bitwes/Gut/).
 
-![](addons/rpg_nodes/icons/RPGCharacter.png) **RPGCharacter:** Muy usable: Testeado con pruebas unitarias (GUT)!!
+![](addons/rpg_nodes/icons/RPGCharacter.png) **RPGCharacter:** Very usable – tested with unit tests (GUT)!!
 
-![](addons/rpg_nodes/icons/RPGDialog.png) **RPGDialog:** Usable: Testeado en una escena en el proyecto.
+![](addons/rpg_nodes/icons/RPGDialog.png) **RPGDialog:** Usable – tested in a scene within the project.
 
-![](addons/rpg_nodes/icons/RPGWeightItem.png) **RPGWeightItem:** Muy usable: y testeado junto a RPGWeightInventory con pruebas unitarias (GUT)
+![](addons/rpg_nodes/icons/RPGWeightItem.png) **RPGWeightItem:** Very usable and tested together with `RPGWeightInventory` using unit tests (GUT).
 
-![](addons/rpg_nodes/icons/RPGWeightInventory.png) **RPGWeightInventory:** Muy usable: y testeado con pruebas unitarias (GUT)
+![](addons/rpg_nodes/icons/RPGWeightInventory.png) **RPGWeightInventory:** Very usable and tested with unit tests (GUT).
 
-![](addons/rpg_nodes/icons/RPGSlotInventory.png) **RPGSlotInventory:** TODO o no usable
+![](addons/rpg_nodes/icons/RPGSlotInventory.png) **RPGSlotInventory:** TODO or not usable.
 
-![](addons/rpg_nodes/icons/RPGStats.png) **RPGStats:** TODO o no usable
+![](addons/rpg_nodes/icons/RPGStats.png) **RPGStats:** TODO or not usable.
 
-## Instalación y uso
+## Installation & Usage
 
-Recomendamos [descargar el último release en github](https://github.com/TheVulcoreTeam/RPGNodes/releases)
+We recommend downloading the latest release from GitHub:  
+[https://github.com/TheVulcoreTeam/RPGNodes/releases](https://github.com/TheVulcoreTeam/RPGNodes/releases)
 
-### Deseo testear el plugin
+### Want to test the plugin?
 
-Para testear el plugin puedes clonar el repositorio y abrirlo con **Godot 4.4.x**. Pero si lo deseas utilizar realmente, es mejor decargar la versión que esta en release en Github.
+Clone the repository and open it with **Godot 4.4.x**.  
+If you actually want to use it, it’s best to download the released version from GitHub.
 
-### Deseo usar el plugin en un proyecto
+### Want to use the plugin in a project?
 
-Para usar el plugin en un proyecto requiere hacer los siguientes pasos:
+Using the plugin requires the following steps:
 
-1) [Descargar el release](https://github.com/TheVulcoreTeam/RPGNodes/releases)
+1. Download the release:  
+   <https://github.com/TheVulcoreTeam/RPGNodes/releases>
+2. Copy the `rpg_nodes` folder and place it inside your project's `addons` directory. If you don’t have an `addons` folder at the root of your project, create one.
+3. Open Godot’s editor and enable the plugin under  
+   **Project → Project Settings → Plugins**
 
-2) Copiar la carpeta rpg_nodes y dejarlo dentro de la carpeta addons de tu proyecto. Si no tienes la carpeta addons en la raiz de tu proyecto debes crearla.
+## Custom Nodes
 
-3) Abrir el editor y activar el plugin en **proyectos >> ajustes del proyecto >> plugins**
-
-## Nodos personalizados
-
-A continuación se describira el uso de los nodos personalizados, si tiene dudas del funcionamiento de algún método puedes levantar un issue de github o puede consultar el código fuente del respectivo nodo que estas utilizando. Los métodos estan en inglés y los comentarios igual.
+Below is a brief description of each custom node.  
+If you have questions about how a particular method works, open a GitHub issue or read the source code for that node.  
+All methods are in English, and comments are written in English as well.
 
 ### RPGCharacter
 
