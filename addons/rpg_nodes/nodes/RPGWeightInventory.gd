@@ -40,11 +40,20 @@ const FULL_INVENTORY = "The Weight Inventory is full"
 signal weight_filled()
 signal weight_changed(new_value : int)
 
-var _weight_inventory : Array[RPGWeightItem] = []
+
+var _weight_inventory : Array[RPGWeightItem] = []:
+	set(value):
+		pass
+	get:
+		return _weight_inventory
+
 
 var weight := 0:
+	set(value):
+		pass
 	get:
 		return weight
+
 
 var max_weight := 100:
 	set(value):
@@ -74,14 +83,17 @@ func add_item(item : RPGWeightItem):
 
 
 # Get item by item_name
-func get_item(item_name : String):
-	return _weight_inventory.filter(
-		func(item): 
-			return item.item_name == item_name
-	)[0]
+func get_item(item_name : String) -> Array[RPGWeightItem]:
+	var items : Array[RPGWeightItem]
+	
+	for item : RPGWeightItem in _weight_inventory:
+		if item.item_name == item_name:
+			items.append(item)
+	
+	return items
 
 
-# Remove a item by item_name
+# Remove the first item by item_name (only one item)
 func remove_item(item_name : String):
 	for item in _weight_inventory:
 		if item.item_name == item_name:
@@ -89,3 +101,12 @@ func remove_item(item_name : String):
 			_weight_inventory.remove_at(_weight_inventory.find(item))
 			weight_changed.emit(weight)
 			break
+
+
+# Remove all items with item_name
+func remove_all_item(item_name : String):
+	for item in _weight_inventory:
+		if item.item_name == item_name:
+			weight -= item.weight
+			_weight_inventory.remove_at(_weight_inventory.find(item))
+			weight_changed.emit(weight)

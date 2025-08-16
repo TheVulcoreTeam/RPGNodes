@@ -20,35 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# WIP: work in progress
-
 @icon("res://addons/rpg_nodes/icons/RPGItem.png")
 
-extends Resource
+extends RPGItem
 
 class_name RPGWeightItem
 
-signal item_name_changed(new_name)
-signal description_changed(new_description)
+
 signal weight_updated(new_weight)
-signal buy_price_changed(new_value)
-signal sell_price_changed(new_value)
 
-
-var item_name := "":
-	set(value):
-		item_name = value
-		item_name_changed.emit(value)
-	get:
-		return item_name
-
-# Item description
-var description := "":
-	set(value):
-		description = value
-		description_changed.emit(value)
-	get:
-		return description
 
 # Item Weight in the inventory
 var weight := 1:
@@ -57,17 +37,3 @@ var weight := 1:
 		weight_updated.emit(value)
 	get:
 		return weight
-
-var buy_price := 2:
-	set(value):
-		buy_price = value
-		buy_price_changed.emit(value)
-	get:
-		return buy_price
-	
-var sell_price := 1:
-	set(value):
-		sell_price = value
-		sell_price_changed.emit(value)
-	get:
-		return sell_price
