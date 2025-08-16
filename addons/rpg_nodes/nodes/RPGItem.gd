@@ -25,7 +25,7 @@
 
 @icon("res://addons/rpg_nodes/icons/RPGItem.png")
 
-extends RPGNode
+extends Resource
 
 class_name RPGItem
 
