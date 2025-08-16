@@ -26,12 +26,13 @@ extends RPGActor
 
 class_name RPGEnemy
 
-# Energy or mana
+## Energy or mana
 @export var energy := 10:
 	set(value):
 		energy = clamp(value, 0, energy_max)
 	get:
 		return energy
+
 
 @export var energy_max := 10:
 	set(value):

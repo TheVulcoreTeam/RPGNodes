@@ -21,12 +21,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# WIP: work in progress
+# TODO: To implement
 
 @icon("res://addons/rpg_nodes/icons/RPGStats.png")
 
 extends RPGNode
 
 class_name RPGStats
-
-# TODO

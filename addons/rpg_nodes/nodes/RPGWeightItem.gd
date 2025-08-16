@@ -30,7 +30,7 @@ class_name RPGWeightItem
 signal weight_updated(new_weight)
 
 
-# Item weight in the inventory
+## Item weight in the inventory
 var weight := 1:
 	set(value):
 		weight = value

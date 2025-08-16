@@ -21,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# WIP: work in progress
+# TODO: to implement
 
 @icon("res://addons/rpg_nodes/icons/RPGSlotInventory.png")
 

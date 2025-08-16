@@ -33,7 +33,7 @@ signal description_changed(new_description)
 signal buy_price_changed(new_value)
 signal sell_price_changed(new_value)
 
-
+## Item name
 var item_name := "":
 	set(value):
 		item_name = value
@@ -42,7 +42,7 @@ var item_name := "":
 		return item_name
 
 
-# Item description
+## Item description
 var description := "":
 	set(value):
 		description = value

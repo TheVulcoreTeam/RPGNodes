@@ -32,11 +32,13 @@ signal experience_gained(amount)
 signal energy_replenished(amount)
 signal energy_used(amount)
 signal energy_reached_full()
-signal energy_depleted() # Emitted when energy drops to zero
+## Emitted when energy drops to zero
+signal energy_depleted()
 signal stamina_replenished(amount)
 signal stamina_used(amount)
 signal stamina_reached_full()
-signal stamina_depleted() # Emitted when stamina is completely exhausted
+## Emitted when stamina is completely exhausted
+signal stamina_depleted()
 
 
 @export var level_max := 30:
@@ -45,12 +47,14 @@ signal stamina_depleted() # Emitted when stamina is completely exhausted
 	get:
 		return level_max
 
-# Energy or mana
+
+## Energy or mana
 @export var energy := 20:
 	set(value):
 		energy = clamp(value, 0, energy_max)
 	get:
 		return energy
+
 
 @export var energy_max := 20:
 	set(value):
@@ -58,26 +62,28 @@ signal stamina_depleted() # Emitted when stamina is completely exhausted
 	get:
 		return energy_max
 
-@export var stamine := 20.0:
+
+@export var stamina := 20.0:
 	set(value):
-		var old_stamine := stamine
+		var old_stamine := stamina
 		var new_stamine := clamp(value, 0, stamine_max)
 		
 		if old_stamine < new_stamine:
-			stamine = new_stamine
+			stamina = new_stamine
 			stamina_replenished.emit(value)
 		else:
-			stamine = new_stamine
+			stamina = new_stamine
 			stamina_used.emit(value)
 		
 		if new_stamine == stamine_max:
-			stamine = new_stamine
+			stamina = new_stamine
 			stamina_reached_full.emit()
 		
 		if new_stamine <= 0:
 			stamina_depleted.emit()
 	get:
-		return stamine
+		return stamina
+
 
 @export var stamine_max := 20.0:
 	set(value):
@@ -85,39 +91,42 @@ signal stamina_depleted() # Emitted when stamina is completely exhausted
 	get:
 		return stamine_max
 
+
 @export var stamine_regen_per_second := 2.0:
 	set(value):
 		stamine_regen_per_second = clamp(value, 1.0, stamine_max)
 	get:
 		return stamine_regen_per_second
 
+
 @export var base_attack := 1
 
-# Constante base que afecta la progresión
+## Base constant that affect the progression
 var experience_base := 100.0
-# Factor que ajusta la curva
+## Factor to ajust the curve
 var experience_factor := 1.5
 
-# Variable para almacenar la experiencia actual
+## Variable to store the current experience
 var current_exp := 0.0
-# Nivel actual del jugador
+## Current level from the player
 var current_level := 1
 
-# Is util for stamine
-var time := 0.0
+## It's useful for stamina
+var _time := 0.0
 
 # TODO: Defence
 # (factor_def/(current_def+factor_def))*damage
 
 
 func _process(delta) -> void:
-	time += delta
+	_time += delta
 	
-	if time >= 1:
-		time = 0.0
-		stamine += stamine_regen_per_second
+	if _time >= 1:
+		_time = 0.0
+		stamina += stamine_regen_per_second
 
 
+## Revive the player when is dead
 func revive(custom_hp := 1, revive_with_max_hp := true) -> void:
 	if not is_dead:
 		self.message_sent.emit("You can't revive someone alive")
@@ -133,13 +142,13 @@ func revive(custom_hp := 1, revive_with_max_hp := true) -> void:
 	revived.emit()
 
 
-# Calcula la experiencia necesaria para alcanzar un nivel específico
+## Get the experience for a specific level
 func get_exp_for_level(level: int) -> float:
-	# Usando sqrt para crear una curva de crecimiento
+	# Use sqrt to create a grow curve
 	return experience_base * pow(level, experience_factor) * sqrt(level)
 
 
-# Calcula la experiencia total necesaria hasta el nivel actual
+## Get the total experience required for the current level
 func get_total_exp_to_current_level() -> float:
 	var total_exp = 0.0
 	for lvl in range(1, current_level):
@@ -147,37 +156,38 @@ func get_total_exp_to_current_level() -> float:
 	return total_exp
 
 
-# Experiencia necesaria para el siguiente nivel
+## Experience needed for the next level
 func get_exp_to_next_level() -> float:
 	return get_exp_for_level(current_level)
 
 
-# Agrega experiencia y sube de nivel si es necesario
+## Add experience and level up if needed
 func add_experience(amount: float) -> void:
 	current_exp += amount
 	
-	# Comprueba si se debe subir de nivel
+	# Check whether it should level up.
 	while current_exp >= get_exp_to_next_level():
 		experience_gained.emit(get_exp_to_next_level())
 		
 		current_exp -= get_exp_to_next_level()
 		
-		level_up()
+		_level_up()
 
 
-# Función llamada al subir de nivel
-func level_up() -> void:
+## Is called when level up
+func _level_up() -> void:
 	current_level += 1
 	
-	# Aquí puedes emitir una señal para actualizar la UI
+	# You can connect a signal when level up
 	level_increased.emit(current_level)
 
 
-# Retorna el porcentaje de progreso hacia el siguiente nivel (0.0 - 1.0)
+## Return the percentage of progress toward the next level (0.0 - 1.0)
 func get_level_progress() -> float:
 	return current_exp / get_exp_to_next_level()
 
 
+## Reset level stats (current_level and current_exp)
 func reset_level_stats() -> void:
 	current_level = 0
 	current_exp = 0.0

@@ -23,8 +23,6 @@
 
 # Description: Inventory weight based
 
-# WIP: work in progress
-
 @icon("res://addons/rpg_nodes/icons/RPGWeightInventory.png")
 
 extends RPGNode
@@ -48,15 +46,15 @@ var _weight_inventory : Array[RPGWeightItem] = []:
 		return _weight_inventory
 
 
-var weight := 0:
+var _weight := 0:
 	set(value):
-		weight = value
-		weight_changed.emit(weight)
+		_weight = value
+		weight_changed.emit(_weight)
 		
-		if weight == max_weight:
+		if _weight == max_weight:
 			weight_filled.emit()
 	get:
-		return weight
+		return _weight
 
 
 var max_weight := 100:
@@ -66,23 +64,23 @@ var max_weight := 100:
 		return max_weight
 
 
-# Add item
+## Add item
 func add_item(item : RPGWeightItem):
-	if item.weight + weight <= max_weight:
+	if item.weight + _weight <= max_weight:
 		_weight_inventory.append(item)
-		weight += item.weight
+		_weight += item.weight
 	else:
 		self._print(
 			str(
 				CANT_ADD + item.item_name,
 				FULL_INVENTORY,
 				ITEM_WEIGHT + str(item.weight),
-				WEIGHT_INVETORY + str(weight)
+				WEIGHT_INVETORY + str(_weight)
 			)
 		)
 
-# Obtenemos un item del inventario dependiendo de us uuid, si no lo obtenemos
-# devuelve null
+## Retrieve an item from the inventory based on its UUID. if not found, 
+## returns null.
 func get_item(uuid : int) -> RPGWeightItem:
 	for item : RPGWeightItem in _weight_inventory:
 		if item.get_instance_id() == uuid:
@@ -91,12 +89,12 @@ func get_item(uuid : int) -> RPGWeightItem:
 	return null
 
 
-# Remueve un item dependiendo de su uuid, si lo remueve devuelve true y si no
-# devuelve false.
+## Removes an item by its UUID. Returns true if the removal succeeded,
+## otherwise returns false.
 func remove_item(uuid : int) -> bool:
 	for idx : int in _weight_inventory.size():
 		if _weight_inventory[idx].get_instance_id() == uuid:
-			weight -= _weight_inventory[idx].weight
+			_weight -= _weight_inventory[idx].weight
 			_weight_inventory.remove_at(idx)
 			return true
 	

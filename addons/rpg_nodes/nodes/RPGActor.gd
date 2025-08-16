@@ -69,10 +69,10 @@ signal revived()
 	get:
 		return hp_max
 
-# Previene que muera más de una vez. Esto hace que el player
-# no pueda ganar/perder vida/energía cuando esta muerto.
-# Para revivirlo se debe utilizar revive().
-# El character si puede ganar experiencia cuando esta muerto,
-# la razón es que a veces se da experiencia al jugador cuando
-# no se esta en la pantalla de juego. 
+## Prevents dying more than once. This ensures the player
+## cannot gain/lose health or energy while dead.
+## To revive them, call revive().
+## The character can still earn experience when dead,
+## because sometimes experience is awarded to the player
+## even when not on the main game screen.
 var is_dead := false
