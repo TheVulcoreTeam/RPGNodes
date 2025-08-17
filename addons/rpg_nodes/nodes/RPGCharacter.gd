@@ -65,38 +65,38 @@ signal stamina_depleted()
 
 @export var stamina := 20.0:
 	set(value):
-		var old_stamine := stamina
-		var new_stamine := clamp(value, 0, stamine_max)
+		var old_stamina := stamina
+		var new_stamina := clamp(value, 0, stamina_max)
 		
-		if old_stamine < new_stamine:
-			stamina = new_stamine
+		if old_stamina < new_stamina:
+			stamina = new_stamina
 			stamina_replenished.emit(value)
 		else:
-			stamina = new_stamine
+			stamina = new_stamina
 			stamina_used.emit(value)
 		
-		if new_stamine == stamine_max:
-			stamina = new_stamine
+		if new_stamina == stamina_max:
+			stamina = new_stamina
 			stamina_reached_full.emit()
 		
-		if new_stamine <= 0:
+		if new_stamina <= 0:
 			stamina_depleted.emit()
 	get:
 		return stamina
 
 
-@export var stamine_max := 20.0:
+@export var stamina_max := 20.0:
 	set(value):
-		stamine_max = clamp(value, 1.0, MAX_VALUE)
+		stamina_max = clamp(value, 1.0, MAX_VALUE)
 	get:
-		return stamine_max
+		return stamina_max
 
 
-@export var stamine_regen_per_second := 2.0:
+@export var stamina_regen_per_second := 2.0:
 	set(value):
-		stamine_regen_per_second = clamp(value, 1.0, stamine_max)
+		stamina_regen_per_second = clamp(value, 1.0, stamina_max)
 	get:
-		return stamine_regen_per_second
+		return stamina_regen_per_second
 
 
 @export var base_attack := 1
@@ -123,7 +123,7 @@ func _process(delta) -> void:
 	
 	if _time >= 1:
 		_time = 0.0
-		stamina += stamine_regen_per_second
+		stamina += stamina_regen_per_second
 
 
 ## Revive the player when is dead

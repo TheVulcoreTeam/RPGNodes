@@ -146,34 +146,34 @@ func test_stamina_management():
 	watch_signals(character)
 	
 	# Disminuir resistencia
-	character.stamine = 10
-	assert_eq(character.stamine, 10, "La resistencia debe disminuir correctamente")
+	character.stamina = 10
+	assert_eq(character.stamina, 10, "La resistencia debe disminuir correctamente")
 	assert_signal_emitted(character, "stamina_used")
 	
 	# Aumentar resistencia
-	character.stamine = 15
-	assert_eq(character.stamine, 15, "La resistencia debe aumentar correctamente")
+	character.stamina = 15
+	assert_eq(character.stamina, 15, "La resistencia debe aumentar correctamente")
 	assert_signal_emitted(character, "stamina_replenished")
 	
 	# Resistencia máxima
-	character.stamine = character.stamine_max
+	character.stamina = character.stamina_max
 	assert_signal_emitted(character, "stamina_reached_full")
 	
 	# Sin resistencia
-	character.stamine = 0
+	character.stamina = 0
 	assert_signal_emitted(character, "stamina_depleted")
 
 
 func test_stamina_regeneration():
 	# Simulamos la recuperación de resistencia
-	character.stamine = 10
+	character.stamina = 10
 	
 	# Simulamos el paso de tiempo
-	character.time = 0.9
+	character._time = 0.9
 	character._process(0.2)  # Esto debería hacer que time >= 1
 	
-	assert_eq(character.stamine, 12, "La resistencia debe regenerarse según la tasa de regeneración")
-	assert_almost_eq(character.time, 0.0, 0.001, "El tiempo debe reiniciarse después de la regeneración")
+	assert_eq(character.stamina, 12, "La resistencia debe regenerarse según la tasa de regeneración")
+	assert_almost_eq(character._time, 0.0, 0.001, "El tiempo debe reiniciarse después de la regeneración")
 
 
 # Test para reset de estadísticas
