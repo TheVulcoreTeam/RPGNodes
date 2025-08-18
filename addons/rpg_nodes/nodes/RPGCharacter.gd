@@ -164,11 +164,10 @@ func get_exp_to_next_level() -> float:
 ## Add experience and level up if needed
 func add_experience(amount: float) -> void:
 	_current_exp += amount
+	experience_gained.emit(amount)
 	
 	# Check whether it should level up.
 	while _current_exp >= get_exp_to_next_level():
-		experience_gained.emit(get_exp_to_next_level())
-		
 		_current_exp -= get_exp_to_next_level()
 		
 		_level_up()
