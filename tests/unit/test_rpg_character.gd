@@ -18,8 +18,8 @@ func after_each():
 
 # Tests para el sistema de experiencia
 func test_initial_exp_values():
-	assert_eq(character.current_exp, 0.0, "El personaje debe comenzar con 0 EXP")
-	assert_eq(character.current_level, 1, "El personaje debe comenzar en nivel 1")
+	assert_eq(character._current_exp, 0.0, "El personaje debe comenzar con 0 EXP")
+	assert_eq(character._current_level, 1, "El personaje debe comenzar en nivel 1")
 	assert_eq(character.get_level_progress(), 0.0, "El progreso inicial debe ser 0")
 
 
@@ -43,13 +43,13 @@ func test_add_experience():
 	
 	# Añadimos experiencia insuficiente para subir de nivel
 	character.add_experience(exp_needed * 0.5)
-	assert_eq(character.current_level, 1, "No debe subir de nivel con experiencia insuficiente")
-	assert_almost_eq(character.current_exp, exp_needed * 0.5, 0.001, "La experiencia debe acumularse correctamente")
+	assert_eq(character._current_level, 1, "No debe subir de nivel con experiencia insuficiente")
+	assert_almost_eq(character._current_exp, exp_needed * 0.5, 0.001, "La experiencia debe acumularse correctamente")
 	
 	# Añadimos el resto para subir de nivel
 	character.add_experience(exp_needed * 0.5)
-	assert_eq(character.current_level, 2, "Debe subir a nivel 2")
-	assert_almost_eq(character.current_exp, 0.0, 0.001, "La experiencia debe reiniciarse al subir de nivel")
+	assert_eq(character._current_level, 2, "Debe subir a nivel 2")
+	assert_almost_eq(character._current_exp, 0.0, 0.001, "La experiencia debe reiniciarse al subir de nivel")
 
 
 func test_multiple_level_ups():
@@ -63,7 +63,7 @@ func test_multiple_level_ups():
 	# Añadimos experiencia para subir varios niveles de una vez
 	character.add_experience(exp_to_level_2 + exp_to_level_3 + exp_to_level_4)
 	
-	assert_eq(character.current_level, 4, "Debe subir múltiples niveles")
+	assert_eq(character._current_level, 4, "Debe subir múltiples niveles")
 
 
 # Tests para HP y estado de muerte
@@ -178,13 +178,13 @@ func test_stamina_regeneration():
 
 # Test para reset de estadísticas
 func test_reset_stats():
-	character.current_level = 10
-	character.current_exp = 150.0
+	character._current_level = 10
+	character._current_exp = 150.0
 	
 	character.reset_level_stats()
 	
-	assert_eq(character.current_level, 0, "El nivel actual debe reiniciarse a 0")
-	assert_eq(character.current_exp, 0.0, "La experiencia debe reiniciarse a 0")
+	assert_eq(character._current_level, 0, "El nivel actual debe reiniciarse a 0")
+	assert_eq(character._current_exp, 0.0, "La experiencia debe reiniciarse a 0")
 
 
 # Test para valores límite
