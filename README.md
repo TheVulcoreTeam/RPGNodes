@@ -73,8 +73,6 @@ An extended RPG actor class that represents a playable character with leveling, 
 - `base_attack: int` - Base attack value (default: 1)
 - `experience_base: float` - Base constant for experience progression (default: 100.0)
 - `experience_factor: float` - Factor to adjust the leveling curve (default: 1.5)
-- `current_exp: float` - Current experience points
-- `current_level: int` - Current character level (default: 1)
 
 ### Signals
 

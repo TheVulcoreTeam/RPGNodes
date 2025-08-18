@@ -107,9 +107,9 @@ var experience_base := 100.0
 var experience_factor := 1.5
 
 ## Variable to store the current experience
-var current_exp := 0.0
+var _current_exp := 0.0
 ## Current level from the player
-var current_level := 1
+var _current_level := 1
 
 ## It's useful for stamina
 var _time := 0.0
@@ -151,43 +151,43 @@ func get_exp_for_level(level: int) -> float:
 ## Get the total experience required for the current level
 func get_total_exp_to_current_level() -> float:
 	var total_exp = 0.0
-	for lvl in range(1, current_level):
+	for lvl in range(1, _current_level):
 		total_exp += get_exp_for_level(lvl)
 	return total_exp
 
 
 ## Experience needed for the next level
 func get_exp_to_next_level() -> float:
-	return get_exp_for_level(current_level)
+	return get_exp_for_level(_current_level)
 
 
 ## Add experience and level up if needed
 func add_experience(amount: float) -> void:
-	current_exp += amount
+	_current_exp += amount
 	
 	# Check whether it should level up.
-	while current_exp >= get_exp_to_next_level():
+	while _current_exp >= get_exp_to_next_level():
 		experience_gained.emit(get_exp_to_next_level())
 		
-		current_exp -= get_exp_to_next_level()
+		_current_exp -= get_exp_to_next_level()
 		
 		_level_up()
 
 
 ## Is called when level up
 func _level_up() -> void:
-	current_level += 1
+	_current_level += 1
 	
 	# You can connect a signal when level up
-	level_increased.emit(current_level)
+	level_increased.emit(_current_level)
 
 
 ## Return the percentage of progress toward the next level (0.0 - 1.0)
 func get_level_progress() -> float:
-	return current_exp / get_exp_to_next_level()
+	return _current_exp / get_exp_to_next_level()
 
 
 ## Reset level stats (current_level and current_exp)
 func reset_level_stats() -> void:
-	current_level = 0
-	current_exp = 0.0
+	_current_level = 0
+	_current_exp = 0.0
