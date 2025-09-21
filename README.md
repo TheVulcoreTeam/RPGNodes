@@ -26,9 +26,14 @@ Unit tests are written with [GUT](https://github.com/bitwes/Gut/).
 
 ![](addons/rpg_nodes/icons/RPGWeightInventory.png) **RPGWeightInventory:** Very usable and tested with unit tests (GUT).
 
+### TODO or not usable
+
 ![](addons/rpg_nodes/icons/RPGSlotInventory.png) **RPGSlotInventory:** TODO or not usable.
 
+**RPGSlotItem** Todo or not usable.
+
 ![](addons/rpg_nodes/icons/RPGStats.png) **RPGStats:** TODO or not usable.
+
 
 ## Installation & Usage
 
@@ -37,7 +42,7 @@ We recommend downloading the latest release from GitHub:
 
 ### Want to test the plugin?
 
-Clone the repository and open it with **Godot 4.4.x**.  
+Clone the repository and open it with **Godot 4.5.x**.  
 If you actually want to use it, it’s best to download the released version from GitHub.
 
 ### Want to use the plugin in a project?
@@ -143,10 +148,10 @@ Base resource class for representing items in the RPG system with basic properti
 
 ### Signals
 
-- `item_name_changed(new_name)` - Emitted when item name is modified
-- `description_changed(new_description)` - Emitted when description changes
-- `buy_price_changed(new_value)` - Emitted when buy price is updated
-- `sell_price_changed(new_value)` - Emitted when sell price is updated
+- `item_name_changed(old_name, new_name)` - Emitted when item name is modified
+- `description_changed(old_description, new_description)` - Emitted when description changes
+- `buy_price_changed(old_value, new_value)` - Emitted when buy price is updated
+- `sell_price_changed(old_value, new_value)` - Emitted when sell price is updated
 
 ---
 
@@ -163,20 +168,13 @@ A weight-based inventory system that manages items with weight constraints.
 ### Signals
 
 - `weight_filled()` - Emitted when inventory reaches maximum weight
-- `weight_changed(new_value)` - Emitted when total weight changes
+- `weight_changed(old_weight, new_value)` - Emitted when total weight changes
 
 ### Functions
 
 - `add_item(item)` - Adds an item to inventory if weight allows
 - `get_item(uuid)` - Retrieves an item by its UUID, returns null if not found
 - `remove_item(uuid)` - Removes an item by UUID, returns true if successful
-
-### Constants
-
-- `CANT_ADD` - Error message for failed item addition
-- `ITEM_WEIGHT` - Label for item weight display
-- `WEIGHT_INVETORY` - Label for inventory weight display
-- `FULL_INVENTORY` - Message when inventory is at capacity
 
 ---
 

@@ -20,17 +20,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-extends Node
+@abstract class_name RPGNode extends Node
 
-class_name RPGNode
 
 signal message_sent(message)
 
+
 @export var prefix := '[color="blue"][RPGNodes] [/color] '
+
 
 func _ready() -> void:
 	message_sent.connect(_print)
 
 
-func _print(message : String):
-	print_rich(prefix + '[color="yellow"] ' + message + '[/color]')
+func _print(...messages : Array):
+	for message in messages:
+		print_rich(prefix + '[color="yellow"] ' + message + '[/color]')

@@ -23,9 +23,8 @@
 
 @icon("res://addons/rpg_nodes/icons/RPGCharacter.png")
 
-extends RPGActor
+class_name RPGCharacter extends RPGActor
 
-class_name RPGCharacter
 
 signal level_increased(new_level)
 signal experience_gained(amount)

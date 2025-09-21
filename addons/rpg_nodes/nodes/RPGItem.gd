@@ -23,21 +23,22 @@
 
 @icon("res://addons/rpg_nodes/icons/RPGItem.png")
 
-extends Resource
-
-class_name RPGItem
+@abstract class_name RPGItem extends Resource
 
 
-signal item_name_changed(new_name)
-signal description_changed(new_description)
-signal buy_price_changed(new_value)
-signal sell_price_changed(new_value)
+signal item_name_changed(old_name, new_name)
+signal description_changed(old_description, new_description)
+
+signal buy_price_changed(old_value, new_value)
+signal sell_price_changed(old_value, new_value)
+
 
 ## Item name
 var item_name := "":
 	set(value):
-		item_name = value
-		item_name_changed.emit(value)
+		if item_name != value:
+			item_name_changed.emit(item_name, value)
+			item_name = value
 	get:
 		return item_name
 
@@ -45,23 +46,28 @@ var item_name := "":
 ## Item description
 var description := "":
 	set(value):
-		description = value
-		description_changed.emit(value)
+		if description != value:
+			description_changed.emit(description, value)
+			description = value
 	get:
 		return description
 
 
+## Item buy price
 var buy_price := 2:
 	set(value):
-		buy_price = value
-		buy_price_changed.emit(value)
+		if buy_price != value:
+			buy_price_changed.emit(buy_price, value)
+			buy_price = value
 	get:
 		return buy_price
 
 
+## Item sell price
 var sell_price := 1:
 	set(value):
-		sell_price = value
-		sell_price_changed.emit(value)
+		if sell_price != value:
+			sell_price_changed.emit(sell_price, value)
+			sell_price = value
 	get:
 		return sell_price

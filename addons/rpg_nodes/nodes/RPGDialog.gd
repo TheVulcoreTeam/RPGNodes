@@ -22,9 +22,8 @@
 
 @icon("res://addons/rpg_nodes/icons/RPGDialog.png")
 
-extends RPGNode
+class_name RPGDialog extends RPGNode
 
-class_name RPGDialog
 
 ## Remember set that variable to use the dialogs
 @export_node_path("RichTextLabel")

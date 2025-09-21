@@ -25,9 +25,7 @@
 
 @icon("res://addons/rpg_nodes/icons/RPGWeightInventory.png")
 
-extends RPGNode
-
-class_name RPGWeightInventory
+class_name RPGWeightInventory extends RPGNode
 
 
 const CANT_ADD = "You can't add this item: "
@@ -35,8 +33,9 @@ const ITEM_WEIGHT = "Item weight: "
 const WEIGHT_INVETORY  = "Weight Inventory: "
 const FULL_INVENTORY = "The Weight Inventory is full"
 
+
 signal weight_filled()
-signal weight_changed(new_value : int)
+signal weight_changed(old_value : int, new_value : int)
 
 
 var _weight_inventory : Array[RPGWeightItem] = []:
@@ -48,11 +47,12 @@ var _weight_inventory : Array[RPGWeightItem] = []:
 
 var _weight := 0:
 	set(value):
-		_weight = value
-		weight_changed.emit(_weight)
-		
-		if _weight == max_weight:
-			weight_filled.emit()
+		if _weight != value:
+			weight_changed.emit(_weight, value)
+			_weight = value
+			
+			if _weight == max_weight:
+				weight_filled.emit()
 	get:
 		return _weight
 

@@ -22,15 +22,17 @@
 
 @icon("res://addons/rpg_nodes/icons/RPGActor.png")
 
-extends RPGNode
+@abstract class_name RPGActor extends RPGNode
 
-class_name RPGActor
 
-const MAX_VALUE = 100000
+const MAX_VALUE = 100_000_000_000
 
 signal hp_added(amount)
 signal hp_removed(amount)
 signal hp_is_full()
+
+signal hp_max_changed(old_value, new_value)
+
 signal died()
 signal revived()
 
@@ -65,7 +67,9 @@ signal revived()
 
 @export var hp_max := 20:
 	set(value):
-		hp_max = clamp(value, 1, MAX_VALUE)
+		if value != hp_max:
+			hp_max_changed.emit(hp_max, value)
+			hp_max = clamp(value, 1, MAX_VALUE)
 	get:
 		return hp_max
 

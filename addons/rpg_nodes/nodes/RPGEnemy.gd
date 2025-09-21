@@ -22,9 +22,8 @@
 
 @icon("res://addons/rpg_nodes/icons/RPGEnemy.png")
 
-extends RPGActor
+class_name RPGEnemy extends RPGActor
 
-class_name RPGEnemy
 
 ## Energy or mana
 @export var energy := 10:

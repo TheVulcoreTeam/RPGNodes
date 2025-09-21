@@ -60,9 +60,11 @@ func test_get_item_by_uuid():
 func test_weight_changed_signal():
 	watch_signals(inventory)
 	
-	inventory.connect("weight_changed", func(new_val):
-		assert_eq(new_val, 5)
-	)
+	var test_weight_changed = func(old_value, new_value):
+		assert_eq(old_value, 0)
+		assert_eq(new_value, 5)
+	
+	inventory.connect("weight_changed", test_weight_changed)
 	
 	var item3 = RPGWeightItem.new()
 	item3.weight = 5
