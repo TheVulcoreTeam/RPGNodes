@@ -80,3 +80,7 @@ signal revived()
 ## because sometimes experience is awarded to the player
 ## even when not on the main game screen.
 var is_dead := false
+
+
+## Obtain the basic properties as a dictionary
+@abstract func get_dictionary() -> Dictionary

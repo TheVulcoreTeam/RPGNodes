@@ -106,9 +106,9 @@ var experience_base := 100.0
 var experience_factor := 1.5
 
 ## Variable to store the current experience
-var _current_exp := 0.0
+var current_exp := 0.0
 ## Current level from the player
-var _current_level := 1
+var current_level := 1
 
 ## It's useful for stamina
 var _time := 0.0
@@ -124,6 +124,7 @@ func _process(delta) -> void:
 		_time = 0.0
 		stamina += stamina_regen_per_second
 
+#region PUBLIC
 
 ## Revive the player when is dead
 func revive(custom_hp := 1, revive_with_max_hp := true) -> void:
@@ -148,44 +149,122 @@ func get_exp_for_level(level: int) -> float:
 
 
 ## Get the total experience required for the current level
-func get_total_exp_to_current_level() -> float:
+func get_total_exp_tocurrent_level() -> float:
 	var total_exp = 0.0
-	for lvl in range(1, _current_level):
+	for lvl in range(1, current_level):
 		total_exp += get_exp_for_level(lvl)
 	return total_exp
 
 
 ## Experience needed for the next level
 func get_exp_to_next_level() -> float:
-	return get_exp_for_level(_current_level)
+	return get_exp_for_level(current_level)
 
 
 ## Add experience and level up if needed
 func add_experience(amount: float) -> void:
-	_current_exp += amount
+	current_exp += amount
 	experience_gained.emit(amount)
 	
 	# Check whether it should level up.
-	while _current_exp >= get_exp_to_next_level():
-		_current_exp -= get_exp_to_next_level()
+	while current_exp >= get_exp_to_next_level():
+		current_exp -= get_exp_to_next_level()
 		
 		_level_up()
 
-
-## Is called when level up
-func _level_up() -> void:
-	_current_level += 1
-	
-	# You can connect a signal when level up
-	level_increased.emit(_current_level)
-
-
 ## Return the percentage of progress toward the next level (0.0 - 1.0)
 func get_level_progress() -> float:
-	return _current_exp / get_exp_to_next_level()
+	return current_exp / get_exp_to_next_level()
 
 
 ## Reset level stats (current_level and current_exp)
 func reset_level_stats() -> void:
-	_current_level = 0
-	_current_exp = 0.0
+	current_level = 0
+	current_exp = 0.0
+
+
+## Obtain the basic properties as a dictionary
+func get_dictionary() -> Dictionary:
+	var dict := {}
+	
+	dict["HP_MAX"] = hp_max as int
+	dict["HP"] = hp as int
+	dict["IS_DEAD"] = is_dead as bool
+	
+	dict["LEVEL_MAX"] = level_max as int
+	dict["CURRENT_LEVEL"] = current_level as int
+	
+	dict["CURRENT_EXP"] = current_exp as float
+	
+	dict["ENERGY_MAX"] = energy_max as float
+	dict["ENERGY"] = energy as int
+	
+	dict["STAMINA_MAX"] = stamina_max as float
+	dict["STAMINA"] = stamina as float
+	dict["STAMINA_REGEN_PER_SECOND"] = stamina_regen_per_second as float
+	
+	dict["BASE_ATTACK"] = base_attack as int
+	
+	dict["EXPERIENCE_BASE"] = experience_base as float
+	dict["EXPERIENCE_FACTOR"] = experience_factor as float
+	
+	return dict
+
+
+func get_rpgcharacter_from_dictionary(rpgcharacter_dict_data : Dictionary) -> RPGCharacter:
+	if not _validate_rpgcharacter_dict_data(rpgcharacter_dict_data):
+		return RPGCharacter.new()
+	
+	var rpgcharacter := RPGCharacter.new()
+	
+	for key : String in rpgcharacter_dict_data.keys():
+		rpgcharacter.set(StringName(key.to_lower()), rpgcharacter_dict_data[key])
+		print(StringName(key.to_lower()), " + ", rpgcharacter_dict_data[key])
+	
+	return rpgcharacter
+
+#endregion
+
+#region PRIVATE
+
+## Is called when level up
+func _level_up() -> void:
+	current_level += 1
+	
+	# You can connect a signal when level up
+	level_increased.emit(current_level)
+
+
+func _validate_rpgcharacter_dict_data(rpgcharacter_dict_data : Dictionary) -> bool:
+	if not rpgcharacter_dict_data.has("HP"):
+		return false
+	elif not rpgcharacter_dict_data.has("HP_MAX"):
+		return false
+	elif not rpgcharacter_dict_data.has("IS_DEAD"):
+		return false
+	elif not rpgcharacter_dict_data.has("CURRENT_LEVEL"):
+		return false
+	elif not rpgcharacter_dict_data.has("LEVEL_MAX"):
+		return false
+	elif not rpgcharacter_dict_data.has("CURRENT_EXP"):
+		return false
+	elif not rpgcharacter_dict_data.has("ENERGY"):
+		return false
+	elif not rpgcharacter_dict_data.has("ENERGY_MAX"):
+		return false
+	elif not rpgcharacter_dict_data.has("STAMINA"):
+		return false
+	elif not rpgcharacter_dict_data.has("STAMINA_MAX"):
+		return false
+	elif not rpgcharacter_dict_data.has("STAMINA_REGEN_PER_SECOND"):
+		return false
+	elif not rpgcharacter_dict_data.has("BASE_ATTACK"):
+		return false
+	elif not rpgcharacter_dict_data.has("EXPERIENCE_BASE"):
+		return false
+	elif not rpgcharacter_dict_data.has("EXPERIENCE_FACTOR"):
+		return false
+	
+	return true
+
+#endregion

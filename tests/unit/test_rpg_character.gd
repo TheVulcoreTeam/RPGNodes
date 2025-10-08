@@ -18,8 +18,8 @@ func after_each():
 
 # Tests para el sistema de experiencia
 func test_initial_exp_values():
-	assert_eq(character._current_exp, 0.0, "El personaje debe comenzar con 0 EXP")
-	assert_eq(character._current_level, 1, "El personaje debe comenzar en nivel 1")
+	assert_eq(character.current_exp, 0.0, "El personaje debe comenzar con 0 EXP")
+	assert_eq(character.current_level, 1, "El personaje debe comenzar en nivel 1")
 	assert_eq(character.get_level_progress(), 0.0, "El progreso inicial debe ser 0")
 
 
@@ -43,13 +43,13 @@ func test_add_experience():
 	
 	# Añadimos experiencia insuficiente para subir de nivel
 	character.add_experience(exp_needed * 0.5)
-	assert_eq(character._current_level, 1, "No debe subir de nivel con experiencia insuficiente")
-	assert_almost_eq(character._current_exp, exp_needed * 0.5, 0.001, "La experiencia debe acumularse correctamente")
+	assert_eq(character.current_level, 1, "No debe subir de nivel con experiencia insuficiente")
+	assert_almost_eq(character.current_exp, exp_needed * 0.5, 0.001, "La experiencia debe acumularse correctamente")
 	
 	# Añadimos el resto para subir de nivel
 	character.add_experience(exp_needed * 0.5)
-	assert_eq(character._current_level, 2, "Debe subir a nivel 2")
-	assert_almost_eq(character._current_exp, 0.0, 0.001, "La experiencia debe reiniciarse al subir de nivel")
+	assert_eq(character.current_level, 2, "Debe subir a nivel 2")
+	assert_almost_eq(character.current_exp, 0.0, 0.001, "La experiencia debe reiniciarse al subir de nivel")
 
 
 func test_multiple_level_ups():
@@ -63,7 +63,7 @@ func test_multiple_level_ups():
 	# Añadimos experiencia para subir varios niveles de una vez
 	character.add_experience(exp_to_level_2 + exp_to_level_3 + exp_to_level_4)
 	
-	assert_eq(character._current_level, 4, "Debe subir múltiples niveles")
+	assert_eq(character.current_level, 4, "Debe subir múltiples niveles")
 
 
 # Tests para HP y estado de muerte
@@ -178,13 +178,13 @@ func test_stamina_regeneration():
 
 # Test para reset de estadísticas
 func test_reset_stats():
-	character._current_level = 10
-	character._current_exp = 150.0
+	character.current_level = 10
+	character.current_exp = 150.0
 	
 	character.reset_level_stats()
 	
-	assert_eq(character._current_level, 0, "El nivel actual debe reiniciarse a 0")
-	assert_eq(character._current_exp, 0.0, "La experiencia debe reiniciarse a 0")
+	assert_eq(character.current_level, 0, "El nivel actual debe reiniciarse a 0")
+	assert_eq(character.current_exp, 0.0, "La experiencia debe reiniciarse a 0")
 
 
 # Test para valores límite
@@ -194,3 +194,90 @@ func test_value_limits():
 	
 	character.energy_max = -10
 	assert_eq(character.energy_max, 1, "Energy máximo no debe ser menor que 1")
+
+
+func test_get_dictionary_returns_expected_keys_and_types():
+	var rpg = RPGCharacter.new()
+	
+	rpg.hp_max = 100
+	rpg.hp = 100
+	rpg.is_dead = false
+	rpg.current_level = 5
+	rpg.level_max = 50
+	rpg.current_exp = 123.45
+	rpg.energy_max = 100.0
+	rpg.energy = 60
+	rpg.stamina_max = 100.0
+	rpg.stamina = 80.5
+	rpg.stamina_regen_per_second = 2.5
+	rpg.base_attack = 20
+	rpg.experience_base = 100.0
+	rpg.experience_factor = 1.5
+	
+	var dict = rpg.get_dictionary()
+	
+	var expected_keys = [
+		"HP", "HP_MAX", "IS_DEAD",
+		"CURRENT_LEVEL", "LEVEL_MAX",
+		"CURRENT_EXP",
+		"ENERGY", "ENERGY_MAX",
+		"STAMINA", "STAMINA_MAX", "STAMINA_REGEN_PER_SECOND",
+		"BASE_ATTACK",
+		"EXPERIENCE_BASE", "EXPERIENCE_FACTOR"
+	]
+	
+	for key in expected_keys:
+		assert_true(dict.has(key), "not found the key: %s" % key)
+	
+	# Verify types
+	assert_eq(dict["HP"], 100, "HP should be int")
+	assert_eq(dict["HP_MAX"], 100, "HP_MAX should be int")
+	assert_eq(dict["IS_DEAD"], false, "IS_DEAD should be bool")
+	assert_eq(dict["CURRENT_LEVEL"], 5, "CURRENT_LEVEL should be int")
+	assert_eq(dict["LEVEL_MAX"], 50, "LEVEL_MAX should be int")
+	assert_eq(dict["CURRENT_EXP"], 123.45, "CURRENT_EXP should be float")
+	assert_eq(dict["ENERGY"], 60, "ENERGY should be int")
+	assert_eq(dict["ENERGY_MAX"], 100.0, "ENERGY_MAX should be float")
+	assert_eq(dict["STAMINA"], 80.5, "STAMINA should be float")
+	assert_eq(dict["STAMINA_MAX"], 100.0, "STAMINA_MAX should be float")
+	assert_eq(dict["STAMINA_REGEN_PER_SECOND"], 2.5, "STAMINA_REGEN_PER_SECOND should be float")
+	assert_eq(dict["BASE_ATTACK"], 20, "BASE_ATTACK should be int")
+	assert_eq(dict["EXPERIENCE_BASE"], 100.0, "EXPERIENCE_BASE should be float")
+	assert_eq(dict["EXPERIENCE_FACTOR"], 1.5, "EXPERIENCE_FACTOR should be float")
+
+
+func test_get_rpgcharacter_from_dictionary_with_valid_data():
+	var original = RPGCharacter.new()
+	original.hp_max = 100
+	original.hp = 90
+	original.is_dead = false
+	original.level_max = 100
+	original.current_level = 3
+	original.current_exp = 250.0
+	original.energy_max = 80.0
+	original.energy = 50
+	original.stamina_max = 90.0
+	original.stamina = 70.0
+	original.stamina_regen_per_second = 1.2
+	original.base_attack = 15
+	original.experience_base = 100.0
+	original.experience_factor = 1.3
+	
+	var dict = original.get_dictionary()
+	var restored = original.get_rpgcharacter_from_dictionary(dict)
+	
+	# Verify that values were correctly restored
+	assert_eq(restored.hp, 90)
+	assert_eq(restored.hp_max, 100)
+	assert_eq(restored.is_dead, false)
+	assert_eq(restored.current_level, 3)
+	assert_eq(restored.level_max, 100)
+	assert_eq(restored.current_exp, 250.0)
+	assert_eq(restored.energy, 50)
+	assert_eq(restored.energy_max, 80.0)
+	assert_eq(restored.stamina, 70.0)
+	assert_eq(restored.stamina_max, 90.0)
+	assert_eq(restored.stamina_regen_per_second, 1.2)
+	assert_eq(restored.base_attack, 15)
+	assert_eq(restored.experience_base, 100.0)
+	assert_eq(restored.experience_factor, 1.3)
