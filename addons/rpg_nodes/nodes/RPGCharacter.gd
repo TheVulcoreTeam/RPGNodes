@@ -210,7 +210,8 @@ func get_dictionary() -> Dictionary:
 	
 	return dict
 
-
+## Create a new RPGCharacter from a dictionary rpgcharacter_dict_data.
+## You can use the get_dictionary() to inverse process.
 func get_rpgcharacter_from_dictionary(rpgcharacter_dict_data : Dictionary) -> RPGCharacter:
 	if not _validate_rpgcharacter_dict_data(rpgcharacter_dict_data):
 		return RPGCharacter.new()
@@ -219,7 +220,6 @@ func get_rpgcharacter_from_dictionary(rpgcharacter_dict_data : Dictionary) -> RP
 	
 	for key : String in rpgcharacter_dict_data.keys():
 		rpgcharacter.set(StringName(key.to_lower()), rpgcharacter_dict_data[key])
-		print(StringName(key.to_lower()), " + ", rpgcharacter_dict_data[key])
 	
 	return rpgcharacter
 
@@ -235,36 +235,16 @@ func _level_up() -> void:
 	level_increased.emit(current_level)
 
 
-func _validate_rpgcharacter_dict_data(rpgcharacter_dict_data : Dictionary) -> bool:
-	if not rpgcharacter_dict_data.has("HP"):
-		return false
-	elif not rpgcharacter_dict_data.has("HP_MAX"):
-		return false
-	elif not rpgcharacter_dict_data.has("IS_DEAD"):
-		return false
-	elif not rpgcharacter_dict_data.has("CURRENT_LEVEL"):
-		return false
-	elif not rpgcharacter_dict_data.has("LEVEL_MAX"):
-		return false
-	elif not rpgcharacter_dict_data.has("CURRENT_EXP"):
-		return false
-	elif not rpgcharacter_dict_data.has("ENERGY"):
-		return false
-	elif not rpgcharacter_dict_data.has("ENERGY_MAX"):
-		return false
-	elif not rpgcharacter_dict_data.has("STAMINA"):
-		return false
-	elif not rpgcharacter_dict_data.has("STAMINA_MAX"):
-		return false
-	elif not rpgcharacter_dict_data.has("STAMINA_REGEN_PER_SECOND"):
-		return false
-	elif not rpgcharacter_dict_data.has("BASE_ATTACK"):
-		return false
-	elif not rpgcharacter_dict_data.has("EXPERIENCE_BASE"):
-		return false
-	elif not rpgcharacter_dict_data.has("EXPERIENCE_FACTOR"):
-		return false
+## Validate if rpgcharacter_dict_data is a valid dictionary to be pased to
+## get_rpgcharacter_from_dictionary()
+func _validate_rpgcharacter_dict_data(rpgcharacter_dict_data: Dictionary) -> bool:
+	var required_keys = [
+		"HP", "HP_MAX", "IS_DEAD", "CURRENT_LEVEL", "LEVEL_MAX",
+		"CURRENT_EXP", "ENERGY", "ENERGY_MAX", "STAMINA", "STAMINA_MAX",
+		"STAMINA_REGEN_PER_SECOND", "BASE_ATTACK", "EXPERIENCE_BASE",
+		"EXPERIENCE_FACTOR"
+	]
 	
-	return true
+	return required_keys.all(func(key): return rpgcharacter_dict_data.has(key))
 
 #endregion
