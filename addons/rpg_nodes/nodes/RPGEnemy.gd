@@ -46,20 +46,19 @@ class_name RPGEnemy extends RPGActor
 
 ## Obtain the basic properties as a dictionary
 func get_dictionary() -> Dictionary:
-	var dict := {}
-	
-	dict["HP_MAX"] = hp_max as int
-	dict["HP"] = hp as int
-	dict["IS_DEAD"] = is_dead as bool
-	
-	dict["ENERGY_MAX"] = energy_max as float
-	dict["ENERGY"] = energy as int
-	
-	dict["BASE_ATTACK"] = base_attack as int
-	
-	dict["EXP_DROP"] = exp_drop as int
-	
-	return dict
+	return {
+		"HP_MAX" = hp_max as int,
+		"HP" = hp as int,
+		"IS_DEAD" = is_dead as bool,
+		
+		"ENERGY_MAX" = energy_max as float,
+		"ENERGY" = energy as int,
+		
+		"BASE_ATTACK"= base_attack as int,
+		
+		"EXP_DROP" = exp_drop as int
+	}
+
 
 ## Create a new RPGEnemy from a dictionary rpgenemy_dict_data.
 ## You can use the get_dictionary() to inverse process.

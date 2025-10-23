@@ -185,30 +185,29 @@ func reset_level_stats() -> void:
 
 ## Obtain the basic properties as a dictionary
 func get_dictionary() -> Dictionary:
-	var dict := {}
+	return {
+		"HP_MAX" = hp_max as int,
+		"HP" = hp as int,
+		"IS_DEAD" = is_dead as bool,
+		
+		"LEVEL_MAX" = level_max as int,
+		"CURRENT_LEVEL" = current_level as int,
+		
+		"CURRENT_EXP" = current_exp as float,
+		
+		"ENERGY_MAX" = energy_max as float,
+		"ENERGY" = energy as int,
+		
+		"STAMINA_MAX" = stamina_max as float,
+		"STAMINA" = stamina as float,
+		"STAMINA_REGEN_PER_SECOND" = stamina_regen_per_second as float,
+		
+		"BASE_ATTACK" = base_attack as int,
+		
+		"EXPERIENCE_BASE" = experience_base as float,
+		"EXPERIENCE_FACTOR" = experience_factor as float
+	}
 	
-	dict["HP_MAX"] = hp_max as int
-	dict["HP"] = hp as int
-	dict["IS_DEAD"] = is_dead as bool
-	
-	dict["LEVEL_MAX"] = level_max as int
-	dict["CURRENT_LEVEL"] = current_level as int
-	
-	dict["CURRENT_EXP"] = current_exp as float
-	
-	dict["ENERGY_MAX"] = energy_max as float
-	dict["ENERGY"] = energy as int
-	
-	dict["STAMINA_MAX"] = stamina_max as float
-	dict["STAMINA"] = stamina as float
-	dict["STAMINA_REGEN_PER_SECOND"] = stamina_regen_per_second as float
-	
-	dict["BASE_ATTACK"] = base_attack as int
-	
-	dict["EXPERIENCE_BASE"] = experience_base as float
-	dict["EXPERIENCE_FACTOR"] = experience_factor as float
-	
-	return dict
 
 ## Create a new RPGCharacter from a dictionary rpgcharacter_dict_data.
 ## You can use the get_dictionary() to inverse process.

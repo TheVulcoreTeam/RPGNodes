@@ -71,3 +71,33 @@ var sell_price := 1:
 			sell_price = value
 	get:
 		return sell_price
+
+
+## Create a new RPGEnemy from a dictionary rpgenemy_dict_data.
+## You can use the get_dictionary() to inverse process.
+func get_rpgenemy_from_dictionary(rpgenemy_dict_data : Dictionary) -> RPGEnemy:
+	if not _validate_rpgenemy_dict_data(rpgenemy_dict_data):
+		return RPGEnemy.new()
+	
+	var rpgenemy := RPGEnemy.new()
+	
+	for key : String in rpgenemy_dict_data.keys():
+		rpgenemy.set(StringName(key.to_lower()), rpgenemy_dict_data[key])
+	
+	return rpgenemy
+
+
+#region PRIVATE
+
+## Validate if rpgenemy_dict_data is a valid dictionary to be pased to
+## get_rpgenemy_from_dictionary()
+func _validate_rpgenemy_dict_data(rpgenemy_dict_data: Dictionary) -> bool:
+	var required_keys = [
+		"HP", "HP_MAX", "IS_DEAD",
+		"ENERGY", "ENERGY_MAX",
+		"BASE_ATTACK", "EXP_DROP"
+	]
+	
+	return required_keys.all(func(key): return rpgenemy_dict_data.has(key))
+
+#endregion
