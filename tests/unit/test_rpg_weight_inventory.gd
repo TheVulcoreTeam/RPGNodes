@@ -2,6 +2,7 @@ extends GutTest
 
 var inventory : RPGWeightInventory
 
+
 func before_each():
 	# Se ejecuta antes de cada test.
 	inventory = RPGWeightInventory.new()
