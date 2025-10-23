@@ -23,7 +23,7 @@
 
 @icon("res://addons/rpg_nodes/icons/RPGItem.png")
 
-@abstract class_name RPGItem extends Resource
+class_name RPGItem extends Resource
 
 
 signal item_name_changed(old_name, new_name)
@@ -73,31 +73,37 @@ var sell_price := 1:
 		return sell_price
 
 
-## Create a new RPGEnemy from a dictionary rpgenemy_dict_data.
-## You can use the get_dictionary() to inverse process.
-func get_rpgenemy_from_dictionary(rpgenemy_dict_data : Dictionary) -> RPGEnemy:
-	if not _validate_rpgenemy_dict_data(rpgenemy_dict_data):
-		return RPGEnemy.new()
-	
-	var rpgenemy := RPGEnemy.new()
-	
-	for key : String in rpgenemy_dict_data.keys():
-		rpgenemy.set(StringName(key.to_lower()), rpgenemy_dict_data[key])
-	
-	return rpgenemy
+## Obtain the basic properties as a dictionary
+func get_dictionary() -> Dictionary:
+	return {
+		"ITEM_NAME" = item_name as String,
+		"DESCRIPTION" = description as String,
+		"BUY_PRICE" = buy_price as int,
+		"SELL_PRICE" = sell_price as int
+	}
 
+## Create a new RPGItem from a dictionary rpgitem_dict_data.
+## You can use the get_dictionary() to inverse process.
+func get_rpgitem_from_dictionary(rpgitem_dict_data : Dictionary) -> RPGItem:
+	if not _validate_rpgitem_dict_data(rpgitem_dict_data):
+		return RPGItem.new()
+	
+	var rpgitem := RPGItem.new()
+	
+	for key : String in rpgitem_dict_data.keys():
+		rpgitem.set(StringName(key.to_lower()), rpgitem_dict_data[key])
+	
+	return rpgitem
 
 #region PRIVATE
 
-## Validate if rpgenemy_dict_data is a valid dictionary to be pased to
-## get_rpgenemy_from_dictionary()
-func _validate_rpgenemy_dict_data(rpgenemy_dict_data: Dictionary) -> bool:
+## Validate if rpgitem_dict_data is a valid dictionary to be pased to
+## get_rpgitem_from_dictionary()
+func _validate_rpgitem_dict_data(rpgitem_dict_data: Dictionary) -> bool:
 	var required_keys = [
-		"HP", "HP_MAX", "IS_DEAD",
-		"ENERGY", "ENERGY_MAX",
-		"BASE_ATTACK", "EXP_DROP"
+		"ITEM_NAME", "DESCRIPTION", "BUY_PRICE", "SELL_PRICE"
 	]
 	
-	return required_keys.all(func(key): return rpgenemy_dict_data.has(key))
+	return required_keys.all(func(key): return rpgitem_dict_data.has(key))
 
 #endregion
