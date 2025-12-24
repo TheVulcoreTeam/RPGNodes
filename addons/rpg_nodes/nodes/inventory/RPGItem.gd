@@ -34,7 +34,7 @@ signal sell_price_changed(old_value, new_value)
 
 
 ## Item name
-var item_name := "":
+@export var item_name := "":
 	set(value):
 		if item_name != value:
 			item_name_changed.emit(item_name, value)
@@ -44,7 +44,7 @@ var item_name := "":
 
 
 ## Item description
-var description := "":
+@export_multiline var description := "":
 	set(value):
 		if description != value:
 			description_changed.emit(description, value)
@@ -54,7 +54,7 @@ var description := "":
 
 
 ## Item buy price
-var buy_price := 2:
+@export var buy_price := 2:
 	set(value):
 		if buy_price != value:
 			buy_price_changed.emit(buy_price, value)
@@ -64,7 +64,7 @@ var buy_price := 2:
 
 
 ## Item sell price
-var sell_price := 1:
+@export var sell_price := 1:
 	set(value):
 		if sell_price != value:
 			sell_price_changed.emit(sell_price, value)
@@ -84,13 +84,13 @@ func get_dictionary() -> Dictionary:
 
 ## Create a new RPGItem from a dictionary rpgitem_dict_data.
 ## You can use the get_dictionary() to inverse process.
-func get_rpgitem_from_dictionary(rpgitem_dict_data : Dictionary) -> RPGItem:
+func get_rpgitem_from_dictionary(rpgitem_dict_data: Dictionary) -> RPGItem:
 	if not _validate_rpgitem_dict_data(rpgitem_dict_data):
 		return RPGItem.new()
 	
 	var rpgitem := RPGItem.new()
 	
-	for key : String in rpgitem_dict_data.keys():
+	for key: String in rpgitem_dict_data.keys():
 		rpgitem.set(StringName(key.to_lower()), rpgitem_dict_data[key])
 	
 	return rpgitem

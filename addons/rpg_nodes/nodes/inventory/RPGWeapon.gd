@@ -22,16 +22,4 @@
 
 @icon("res://addons/rpg_nodes/icons/RPGItem.png")
 
-class_name RPGWeightItem extends RPGItem
-
-
-signal weight_updated(new_weight)
-
-
-## Item weight in the inventory
-var weight := 1:
-	set(value):
-		weight = value
-		weight_updated.emit(value)
-	get:
-		return weight
+class_name RPGWeapon extends RPGWeightItem
