@@ -23,3 +23,41 @@
 @icon("res://addons/rpg_nodes/icons/RPGItem.png")
 
 class_name RPGPotion extends RPGWeightItem
+
+
+enum PotionEffect {HEALTH, MANA, SATURATION}
+
+
+signal effect_type_changed(old_value, new_value)
+signal value_changed(old_value, new_value)
+signal duration_changed(old_value, new_value)
+
+
+## Potion effect type
+@export var effect_type: PotionEffect = PotionEffect.HEALTH:
+	set(val):
+		if effect_type != val:
+			effect_type_changed.emit(effect_type, val)
+			effect_type = val
+	get:
+		return effect_type
+
+
+## Effect value
+@export var value := 0:
+	set(val):
+		if value != val:
+			value_changed.emit(value, val)
+			value = val
+	get:
+		return value
+
+
+## Effect duration
+@export var duration := 0.0:
+	set(val):
+		if duration != val:
+			duration_changed.emit(duration, val)
+			duration = val
+	get:
+		return duration

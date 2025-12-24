@@ -23,3 +23,27 @@
 @icon("res://addons/rpg_nodes/icons/RPGItem.png")
 
 class_name RPGShield extends RPGWeightItem
+
+
+signal defense_changed(old_value, new_value)
+signal block_chance_changed(old_value, new_value)
+
+
+## Shield defense
+@export var defense := 0:
+	set(value):
+		if defense != value:
+			defense_changed.emit(defense, value)
+			defense = value
+	get:
+		return defense
+
+
+## Shield block chance
+@export var block_chance := 0.0:
+	set(value):
+		if block_chance != value:
+			block_chance_changed.emit(block_chance, value)
+			block_chance = value
+	get:
+		return block_chance

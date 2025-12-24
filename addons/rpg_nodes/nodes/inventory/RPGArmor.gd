@@ -35,3 +35,7 @@ enum ArmorType {
 
 ## Armor type
 @export var armor_type: ArmorType = ArmorType.HELMET
+
+
+## Armor defence
+@export_range(0, 100) var defence := 0

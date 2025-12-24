@@ -23,3 +23,38 @@
 @icon("res://addons/rpg_nodes/icons/RPGItem.png")
 
 class_name RPGWeapon extends RPGWeightItem
+
+
+signal damage_changed(old_value, new_value)
+signal attack_speed_changed(old_value, new_value)
+signal crit_chance_changed(old_value, new_value)
+
+
+## Weapon damage
+@export var damage := 0:
+	set(value):
+		if damage != value:
+			damage_changed.emit(damage, value)
+			damage = value
+	get:
+		return damage
+
+
+## Weapon attack speed
+@export var attack_speed := 1.0:
+	set(value):
+		if attack_speed != value:
+			attack_speed_changed.emit(attack_speed, value)
+			attack_speed = value
+	get:
+		return attack_speed
+
+
+## Weapon critical chance
+@export var crit_chance := 0.0:
+	set(value):
+		if crit_chance != value:
+			crit_chance_changed.emit(crit_chance, value)
+			crit_chance = value
+	get:
+		return crit_chance
