@@ -191,3 +191,55 @@ Extended RPGItem class that adds weight properties for use in weight-based inven
 - `weight_updated(new_weight)` - Emitted when item weight is modified
 
 This class inherits all properties, signals, and functionality from RPGItem, adding weight management specifically for inventory systems that track carrying capacity.
+
+---
+
+## RPGPotion.gd
+
+Consumable item that applies an effect over time or instantly.
+
+### Properties
+
+- `effect_type: PotionEffect` - Type of effect (HEALTH, MANA, SATURATION)
+- `value: int` - Magnitude of the effect
+- `duration: float` - Duration in seconds
+
+### Signals
+
+- `effect_type_changed(old_value, new_value)`
+- `value_changed(old_value, new_value)`
+- `duration_changed(old_value, new_value)`
+
+---
+
+## RPGShield.gd
+
+Protective gear that provides defense and block chance.
+
+### Properties
+
+- `defense: int` - Defense value
+- `block_chance: float` - Chance to block attacks (0.0 to 1.0)
+
+### Signals
+
+- `defense_changed(old_value, new_value)`
+- `block_chance_changed(old_value, new_value)`
+
+---
+
+## RPGWeapon.gd
+
+Offensive item with damage and attack properties.
+
+### Properties
+
+- `damage: int` - Base damage
+- `attack_speed: float` - Attacks per second
+- `crit_chance: float` - Critical hit chance (0.0 to 1.0)
+
+### Signals
+
+- `damage_changed(old_value, new_value)`
+- `attack_speed_changed(old_value, new_value)`
+- `crit_chance_changed(old_value, new_value)`
