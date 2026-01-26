@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2018 - 2025 Matías Muñoz Espinoza
+# Copyright (c) 2018 - 2026 Matías Muñoz Espinoza
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,6 @@ func _ready() -> void:
 	message_sent.connect(_print)
 
 
-func _print(...messages : Array):
+func _print(...messages: Array) -> void:
 	for message in messages:
 		print_rich(prefix + '[color="yellow"] ' + message + '[/color]')

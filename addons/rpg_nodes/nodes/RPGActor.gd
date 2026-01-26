@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2025 Matías Muñoz Espinoza
+# Copyright (c) 2025 - 2026 Matías Muñoz Espinoza
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -68,8 +68,9 @@ signal revived()
 @export var hp_max := 20:
 	set(value):
 		if value != hp_max:
-			hp_max_changed.emit(hp_max, value)
+			var old_value := hp_max
 			hp_max = clamp(value, 1, MAX_VALUE)
+			hp_max_changed.emit(old_value, hp_max)
 	get:
 		return hp_max
 
@@ -83,4 +84,4 @@ var is_dead := false
 
 
 ## Obtain the basic properties as a dictionary
-@abstract func get_dictionary() -> Dictionary
+@abstract func to_dict() -> Dictionary

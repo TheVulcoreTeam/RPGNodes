@@ -154,7 +154,7 @@ func test_get_dictionary_returns_correct_structure():
 	rpg_item.buy_price = 100
 	rpg_item.sell_price = 50
 	
-	var dict = rpg_item.get_dictionary()
+	var dict = rpg_item.to_dict()
 	
 	assert_has(dict, "ITEM_NAME", "Dictionary should have ITEM_NAME key")
 	assert_has(dict, "DESCRIPTION", "Dictionary should have DESCRIPTION key")
@@ -168,7 +168,7 @@ func test_get_dictionary_returns_correct_values():
 	rpg_item.buy_price = 20
 	rpg_item.sell_price = 10
 	
-	var dict = rpg_item.get_dictionary()
+	var dict = rpg_item.to_dict()
 	
 	assert_eq(dict["ITEM_NAME"], "Poción", "ITEM_NAME should match")
 	assert_eq(dict["DESCRIPTION"], "Cura 50 HP", "DESCRIPTION should match")
@@ -177,7 +177,7 @@ func test_get_dictionary_returns_correct_values():
 
 
 func test_get_dictionary_with_default_values():
-	var dict = rpg_item.get_dictionary()
+	var dict = rpg_item.to_dict()
 	
 	assert_eq(dict["ITEM_NAME"], "", "ITEM_NAME should be empty")
 	assert_eq(dict["DESCRIPTION"], "", "DESCRIPTION should be empty")
@@ -194,7 +194,8 @@ func test_get_rpgitem_from_dictionary_creates_item_with_correct_values():
 		"SELL_PRICE": 75
 	}
 	
-	var new_item = rpg_item.get_rpgitem_from_dictionary(dict)
+	var new_item = RPGItem.new()
+	new_item.from_dict(dict)
 	
 	assert_eq(new_item.item_name, "Escudo", "item_name should match")
 	assert_eq(new_item.description, "Protege del daño", "description should match")
@@ -207,7 +208,8 @@ func test_get_rpgitem_from_dictionary_with_invalid_dict_returns_default_item():
 		"ITEM_NAME": "Incompleto"
 	}
 	
-	var new_item = rpg_item.get_rpgitem_from_dictionary(invalid_dict)
+	var new_item = RPGItem.new()
+	new_item.from_dict(invalid_dict)
 	
 	assert_eq(new_item.item_name, "", "Should return default item with empty name")
 	assert_eq(new_item.buy_price, 2, "Should return default item with default buy_price")
@@ -217,7 +219,8 @@ func test_get_rpgitem_from_dictionary_with_invalid_dict_returns_default_item():
 func test_get_rpgitem_from_dictionary_with_empty_dict_returns_default_item():
 	var empty_dict = {}
 	
-	var new_item = rpg_item.get_rpgitem_from_dictionary(empty_dict)
+	var new_item = RPGItem.new()
+	new_item.from_dict(empty_dict)
 	
 	assert_eq(new_item.item_name, "", "Should return default item")
 	assert_eq(new_item.description, "", "Should return default item")
@@ -229,8 +232,9 @@ func test_get_rpgitem_from_dictionary_roundtrip():
 	rpg_item.buy_price = 500
 	rpg_item.sell_price = 250
 	
-	var dict = rpg_item.get_dictionary()
-	var new_item = rpg_item.get_rpgitem_from_dictionary(dict)
+	var dict = rpg_item.to_dict()
+	var new_item = RPGItem.new()
+	new_item.from_dict(dict)
 	
 	assert_eq(new_item.item_name, rpg_item.item_name, "Roundtrip should preserve item_name")
 	assert_eq(new_item.description, rpg_item.description, "Roundtrip should preserve description")

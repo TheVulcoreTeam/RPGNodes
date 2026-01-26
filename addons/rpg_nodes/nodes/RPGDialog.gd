@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2018 - 2025 Matías Muñoz Espinoza
+# Copyright (c) 2018 - 2026 Matías Muñoz Espinoza
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -61,7 +61,7 @@ var _prev_character_name := ""
 var _prev_avatar_texture := ""
 
 ## add_section is used to add new dialog with name, message and optional avatar
-func add_section(character_name : String, message : String, avatar_image := ""):
+func add_section(character_name: String, message: String, avatar_image: String = "") -> void:
 	dialogue.append({
 		"CHARACTER_NAME" : character_name,
 		"MESSAGE" : message,
@@ -69,7 +69,7 @@ func add_section(character_name : String, message : String, avatar_image := ""):
 	})
 
 ## next_dialog is used for start dialog or get_next dialog
-func next_dialog():
+func next_dialog() -> Dictionary:
 	# If dialogue not exist or title_name is empty or text is empty send a message if debug is
 	# active
 	if not dialogue or title_name.is_empty() or text.is_empty():
@@ -125,9 +125,9 @@ func next_dialog():
 
 
 ## Reset index to start again the dialog section
-func reset_index():
+func reset_index() -> void:
 	_section_idx = 0
 
 
-func clear_dialog():
+func clear_dialog() -> void:
 	dialogue.clear()

@@ -37,8 +37,9 @@ signal sell_price_changed(old_value, new_value)
 @export var item_name := "":
 	set(value):
 		if item_name != value:
-			item_name_changed.emit(item_name, value)
+			var old_name := item_name
 			item_name = value
+			item_name_changed.emit(old_name, value)
 	get:
 		return item_name
 
@@ -47,8 +48,9 @@ signal sell_price_changed(old_value, new_value)
 @export_multiline var description := "":
 	set(value):
 		if description != value:
-			description_changed.emit(description, value)
+			var old_description := description
 			description = value
+			description_changed.emit(old_description, value)
 	get:
 		return description
 
@@ -57,8 +59,9 @@ signal sell_price_changed(old_value, new_value)
 @export var buy_price := 2:
 	set(value):
 		if buy_price != value:
-			buy_price_changed.emit(buy_price, value)
+			var old_value := buy_price
 			buy_price = value
+			buy_price_changed.emit(old_value, value)
 	get:
 		return buy_price
 
@@ -67,14 +70,15 @@ signal sell_price_changed(old_value, new_value)
 @export var sell_price := 1:
 	set(value):
 		if sell_price != value:
-			sell_price_changed.emit(sell_price, value)
+			var old_value := sell_price
 			sell_price = value
+			sell_price_changed.emit(old_value, value)
 	get:
 		return sell_price
 
 
 ## Obtain the basic properties as a dictionary
-func get_dictionary() -> Dictionary:
+func to_dict() -> Dictionary:
 	return {
 		"ITEM_NAME" = item_name as String,
 		"DESCRIPTION" = description as String,
@@ -82,28 +86,24 @@ func get_dictionary() -> Dictionary:
 		"SELL_PRICE" = sell_price as int
 	}
 
-## Create a new RPGItem from a dictionary rpgitem_dict_data.
-## You can use the get_dictionary() to inverse process.
-func get_rpgitem_from_dictionary(rpgitem_dict_data: Dictionary) -> RPGItem:
-	if not _validate_rpgitem_dict_data(rpgitem_dict_data):
-		return RPGItem.new()
+## Create a new RPGItem from a dictionary data.
+## You can use the to_dict() to inverse process.
+func from_dict(data: Dictionary) -> void:
+	if not _validate_rpgitem_dict_data(data):
+		return
 	
-	var rpgitem := RPGItem.new()
-	
-	for key: String in rpgitem_dict_data.keys():
-		rpgitem.set(StringName(key.to_lower()), rpgitem_dict_data[key])
-	
-	return rpgitem
+	for key: String in data.keys():
+		set(StringName(key.to_lower()), data[key])
 
 #region PRIVATE
 
-## Validate if rpgitem_dict_data is a valid dictionary to be pased to
-## get_rpgitem_from_dictionary()
-func _validate_rpgitem_dict_data(rpgitem_dict_data: Dictionary) -> bool:
+## Validate if data is a valid dictionary to be passed to
+## from_dict()
+func _validate_rpgitem_dict_data(data: Dictionary) -> bool:
 	var required_keys = [
 		"ITEM_NAME", "DESCRIPTION", "BUY_PRICE", "SELL_PRICE"
 	]
 	
-	return required_keys.all(func(key): return rpgitem_dict_data.has(key))
+	return required_keys.all(func(key): return data.has(key))
 
 #endregion

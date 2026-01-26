@@ -63,12 +63,12 @@ var _slot_grid: Array[Array] = []  # 2D array storing item references
 var _slot_items: Array[RPGSlotItem] = []
 
 
-func _ready():
+func _ready() -> void:
 	_initialize_grid()
 
 
 # Initialize the grid with null values
-func _initialize_grid():
+func _initialize_grid() -> void:
 	_slot_grid.clear()
 	for y in range(grid_height):
 		var row: Array = []
@@ -148,7 +148,7 @@ func _find_first_available_position(item_size: Vector2i) -> Vector2i:
 
 
 # Place item at specific position
-func _place_item(item: RPGSlotItem, position: Vector2i):
+func _place_item(item: RPGSlotItem, position: Vector2i) -> void:
 	item.position = position
 	
 	for y in range(item.height):
@@ -160,7 +160,7 @@ func _place_item(item: RPGSlotItem, position: Vector2i):
 
 
 # Remove item from inventory
-func _remove_item(item: RPGSlotItem):
+func _remove_item(item: RPGSlotItem) -> void:
 	var position = item.position
 	
 	for y in range(item.height):

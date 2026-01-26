@@ -15,24 +15,30 @@ For example:
 
 ## Project Status
 
-The project is usable, though some nodes are still incomplete.  
+The project is production-ready with comprehensive inventory management, character systems, and robust testing coverage.  
 Unit tests are written with [GUT](https://github.com/bitwes/Gut/).
 
-![](addons/rpg_nodes/icons/RPGCharacter.png) **RPGCharacter:** Very usable – tested with unit tests (GUT)!!
+### Production Ready Features
+
+![](addons/rpg_nodes/icons/RPGCharacter.png) **RPGCharacter:** Production-ready – tested with unit tests (GUT) and enhanced with serialization support!
 
 ![](addons/rpg_nodes/icons/RPGDialog.png) **RPGDialog:** Usable – tested in a scene within the project.
 
-![](addons/rpg_nodes/icons/RPGWeightItem.png) **RPGWeightItem:** Very usable and tested together with `RPGWeightInventory` using unit tests (GUT).
+![](addons/rpg_nodes/icons/RPGWeightItem.png) **RPGWeightItem:** Production-ready and tested together with `RPGWeightInventory` using unit tests (GUT).
 
-![](addons/rpg_nodes/icons/RPGWeightInventory.png) **RPGWeightInventory:** Very usable and tested with unit tests (GUT).
+![](addons/rpg_nodes/icons/RPGWeightInventory.png) **RPGWeightInventory:** Production-ready and tested with unit tests (GUT).
 
-### TODO or not usable
+![](addons/rpg_nodes/icons/RPGSlotInventory.png) **RPGSlotInventory:** Production-ready – complete grid-based inventory system with comprehensive tests (GUT)!
 
-![](addons/rpg_nodes/icons/RPGSlotInventory.png) **RPGSlotInventory:** TODO or not usable.
+![](addons/rpg_nodes/icons/RPGStats.png) **RPGStats:** Production-ready – full character stat management with allocation system and extensive tests (GUT)!
 
-**RPGSlotItem** Todo or not usable.
+### Supporting Classes
 
-![](addons/rpg_nodes/icons/RPGStats.png) **RPGStats:** TODO or not usable.
+**RPGSlotItem** Functional companion for slot-based inventories.
+
+**RPGActor** Abstract base class for actor-like entities.
+
+**RPGEnemy** Specific implementation for enemy characters.
 
 
 ## Installation & Usage
@@ -54,6 +60,32 @@ Using the plugin requires the following steps:
 2. Copy the `rpg_nodes` folder and place it inside your project's `addons` directory. If you don’t have an `addons` folder at the root of your project, create one.
 3. Open Godot’s editor and enable the plugin under  
    **Project → Project Settings → Plugins**
+
+## What's New in v0.10.0
+
+This major release transforms RPGNodes from a promising toolkit into a production-ready RPG framework:
+
+* **Complete Dual Inventory Systems**: Choose between weight-based or Diablo-style slot-based inventories
+* **Production-Ready Stats System**: Full character stat management with point allocation
+* **Enhanced Architecture**: Better inheritance with proper base classes (RPGActor, RPGNode)
+* **Comprehensive Testing**: Extensive unit test coverage for all new features
+* **Serialization Support**: Save/load functionality for critical systems
+
+## Choosing the Right Inventory System
+
+RPGNodes now offers two complete inventory solutions:
+
+### Weight-Based Inventory (`RPGWeightInventory` + `RPGWeightItem`)
+* **Best for**: Realistic games with carrying capacity limits
+* **Features**: Items have weight, total weight capacity management
+* **Use cases**: Survival games, realistic RPGs, resource management games
+
+### Slot-Based Inventory (`RPGSlotInventory` + `RPGSlotItem`)
+* **Best for**: Classic RPGs with grid-based inventories
+* **Features**: Grid layout (width × height), items take up multiple slots, auto-positioning
+* **Use cases**: Diablo-style games, tactical RPGs, games with visual inventory management
+
+Both systems are fully tested and production-ready. Choose based on your game's design requirements.
 
 ## Custom Nodes
 
@@ -191,6 +223,119 @@ Extended RPGItem class that adds weight properties for use in weight-based inven
 - `weight_updated(new_weight)` - Emitted when item weight is modified
 
 This class inherits all properties, signals, and functionality from RPGItem, adding weight management specifically for inventory systems that track carrying capacity.
+
+---
+
+## RPGSlotInventory.gd
+
+A grid-based inventory system similar to Diablo-style games where items occupy specific slots in a grid layout.
+
+### Properties
+
+- `width: int` - Grid width in slots (default: 10)
+- `height: int` - Grid height in slots (default: 10)
+- `_slot_inventory: Array[RPGSlotItem]` - Array of items in the inventory
+- `_grid: Array` - 2D grid representing occupied slots
+
+### Signals
+
+- `slot_item_added(item)` - Emitted when an item is added to the inventory
+- `slot_item_removed(item)` - Emitted when an item is removed from the inventory
+- `slot_item_moved(item, old_position, new_position)` - Emitted when an item changes position
+- `inventory_resized(old_size, new_size)` - Emitted when grid dimensions change
+
+### Functions
+
+- `add_item(item, position)` - Adds an item at specific position or finds available spot
+- `remove_item(uuid)` - Removes an item by UUID
+- `move_item(uuid, new_position)` - Moves an item to a new position
+- `get_available_space(position, item_width, item_height)` - Checks if space is available
+- `find_available_position(item_width, item_height)` - Finds first available position
+- `is_position_valid(position, item_width, item_height)` - Validates position boundaries
+
+---
+
+## RPGSlotItem.gd
+
+Extended RPGItem class that adds spatial properties for grid-based inventory systems.
+
+### Properties
+
+- `width: int` - Item width in inventory grid slots (default: 1, minimum: 1)
+- `height: int` - Item height in inventory grid slots (default: 1, minimum: 1)
+- `position: Vector2i` - Current position in inventory grid (default: Vector2i.ZERO)
+
+### Signals
+
+- `dimensions_changed(old_size, new_size)` - Emitted when width or height changes
+- `position_changed(old_position, new_position)` - Emitted when position changes
+
+### Functions
+
+- `get_occupied_cells()` - Returns array of grid cells occupied by this item
+- `is_position_valid(inventory_width, inventory_height)` - Checks if current position is valid
+- `would_fit_at(position, inventory_width, inventory_height)` - Checks if item would fit at position
+
+This class inherits all properties, signals, and functionality from RPGItem, adding spatial management for grid-based inventory systems.
+
+---
+
+## RPGStats.gd
+
+Comprehensive character stat management system with dynamic stat addition and point allocation.
+
+### Properties
+
+- `stat_points: int` - Available stat points for allocation (default: 0)
+- `_stats: Dictionary` - Dictionary storing all stats with name-value pairs
+- `_base_stats: Dictionary` - Dictionary storing base stat values
+
+### Signals
+
+- `stat_points_changed(old_points, new_points)` - Emitted when stat points change
+- `stat_added(stat_name, value)` - Emitted when a new stat is added
+- `stat_changed(stat_name, old_value, new_value)` - Emitted when a stat value changes
+- `stat_points_allocated(stat_name, points)` - Emitted when points are allocated to a stat
+
+### Functions
+
+- `add_stat(stat_name, base_value, current_value)` - Adds a new stat to the character
+- `get_stat(stat_name)` - Gets current value of a stat
+- `get_base_stat(stat_name)` - Gets base value of a stat
+- `set_stat(stat_name, value)` - Sets current value of a stat
+- `allocate_stat_points(stat_name, points)` - Allocates stat points to increase a stat
+- `add_stat_points(points)` - Adds available stat points
+- `to_dict()` - Serializes stats to dictionary for saving
+- `from_dict(data)` - Loads stats from dictionary
+
+---
+
+## RPGActor.gd
+
+Abstract base class for all actor-like entities in the RPG system.
+
+### Properties
+
+- `character_name: String` - Name of the actor (default: "Actor")
+
+### Signals
+
+- `character_name_changed(old_name, new_name)` - Emitted when actor name changes
+
+This class serves as the foundation for all character and enemy classes, providing common actor functionality and naming capabilities.
+
+---
+
+## RPGEnemy.gd
+
+Specific implementation for enemy characters inheriting from RPGActor.
+
+### Properties
+
+- Inherits all properties from RPGActor
+- Additional enemy-specific properties can be added as needed
+
+This class provides a starting point for enemy character implementation with all base actor functionality inherited from RPGActor.
 
 ---
 

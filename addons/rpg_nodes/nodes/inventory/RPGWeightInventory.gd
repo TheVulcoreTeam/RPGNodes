@@ -65,10 +65,11 @@ var max_weight := 100:
 
 
 ## Add item
-func add_item(item : RPGWeightItem):
+func add_item(item: RPGWeightItem) -> bool:
 	if item.weight + _weight <= max_weight:
 		_weight_inventory.append(item)
 		_weight += item.weight
+		return true
 	else:
 		self._print(
 			str(
@@ -78,6 +79,7 @@ func add_item(item : RPGWeightItem):
 				WEIGHT_INVETORY + str(_weight)
 			)
 		)
+		return false
 
 ## Retrieve an item from the inventory based on its UUID. if not found, 
 ## returns null.

@@ -214,7 +214,7 @@ func test_get_dictionary_returns_expected_keys_and_types():
 	rpg.experience_base = 100.0
 	rpg.experience_factor = 1.5
 	
-	var dict = rpg.get_dictionary()
+	var dict = rpg.to_dict()
 	
 	var expected_keys = [
 		"HP", "HP_MAX", "IS_DEAD",
@@ -263,8 +263,9 @@ func test_get_rpgcharacter_from_dictionary_with_valid_data():
 	original.experience_base = 100.0
 	original.experience_factor = 1.3
 	
-	var dict = original.get_dictionary()
-	var restored = original.get_rpgcharacter_from_dictionary(dict)
+	var dict = original.to_dict()
+	var restored = RPGCharacter.new()
+	restored.from_dict(dict)
 	
 	# Verify that values were correctly restored
 	assert_eq(restored.hp, 90)

@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2025 Matías Muñoz Espinoza
+# Copyright (c) 2025 - 2026 Matías Muñoz Espinoza
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,7 @@ class_name RPGEnemy extends RPGActor
 
 
 ## Obtain the basic properties as a dictionary
-func get_dictionary() -> Dictionary:
+func to_dict() -> Dictionary:
 	return {
 		"HP_MAX" = hp_max as int,
 		"HP" = hp as int,
@@ -60,31 +60,27 @@ func get_dictionary() -> Dictionary:
 	}
 
 
-## Create a new RPGEnemy from a dictionary rpgenemy_dict_data.
-## You can use the get_dictionary() to inverse process.
-func get_rpgenemy_from_dictionary(rpgenemy_dict_data : Dictionary) -> RPGEnemy:
-	if not _validate_rpgenemy_dict_data(rpgenemy_dict_data):
-		return RPGEnemy.new()
+## Create a new RPGEnemy from a dictionary data.
+## You can use the to_dict() to inverse process.
+func from_dict(data: Dictionary) -> void:
+	if not _validate_rpgenemy_dict_data(data):
+		return
 	
-	var rpgenemy := RPGEnemy.new()
-	
-	for key : String in rpgenemy_dict_data.keys():
-		rpgenemy.set(StringName(key.to_lower()), rpgenemy_dict_data[key])
-	
-	return rpgenemy
+	for key : String in data.keys():
+		set(StringName(key.to_lower()), data[key])
 
 
 #region PRIVATE
 
-## Validate if rpgenemy_dict_data is a valid dictionary to be pased to
-## get_rpgenemy_from_dictionary()
-func _validate_rpgenemy_dict_data(rpgenemy_dict_data: Dictionary) -> bool:
+## Validate if data is a valid dictionary to be passed to
+## from_dict()
+func _validate_rpgenemy_dict_data(data: Dictionary) -> bool:
 	var required_keys = [
 		"HP", "HP_MAX", "IS_DEAD",
 		"ENERGY", "ENERGY_MAX",
 		"BASE_ATTACK", "EXP_DROP"
 	]
 	
-	return required_keys.all(func(key): return rpgenemy_dict_data.has(key))
+	return required_keys.all(func(key): return data.has(key))
 
 #endregion

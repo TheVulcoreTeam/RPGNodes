@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2018 - 2025 Matías Muñoz Espinoza
+# Copyright (c) 2018 - 2026 Matías Muñoz Espinoza
 # Copyright (c) 2018 Jovani Pérez
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -40,11 +40,7 @@ signal stamina_reached_full()
 signal stamina_depleted()
 
 
-@export var level_max := 30:
-	set(value):
-		level_max = value
-	get:
-		return level_max
+@export var level_max := 30
 
 
 ## Energy or mana
@@ -100,21 +96,21 @@ signal stamina_depleted()
 
 @export var base_attack := 1
 
-## Base constant that affect the progression
+## Base constant that affects the progression
 var experience_base := 100.0
-## Factor to ajust the curve
+## Factor to adjust the curve
 var experience_factor := 1.5
 
 ## Variable to store the current experience
 var current_exp := 0.0
-## Current level from the player
+## Current level from player
 var current_level := 1
 
-## It's useful for stamina
+## Used for stamina regeneration
 var _time := 0.0
 
-# TODO: Defence
-# (factor_def/(current_def+factor_def))*damage
+# TODO: Add defense system
+# Formula: (factor_def/(current_def+factor_def))*damage
 
 
 func _process(delta) -> void:
@@ -126,7 +122,7 @@ func _process(delta) -> void:
 
 #region PUBLIC
 
-## Revive the player when is dead
+## Revive the player when dead
 func revive(custom_hp := 1, revive_with_max_hp := true) -> void:
 	if not is_dead:
 		self.message_sent.emit("You can't revive someone alive")
@@ -184,7 +180,7 @@ func reset_level_stats() -> void:
 
 
 ## Obtain the basic properties as a dictionary
-func get_dictionary() -> Dictionary:
+func to_dict() -> Dictionary:
 	return {
 		"HP_MAX" = hp_max as int,
 		"HP" = hp as int,
@@ -209,18 +205,14 @@ func get_dictionary() -> Dictionary:
 	}
 	
 
-## Create a new RPGCharacter from a dictionary rpgcharacter_dict_data.
-## You can use the get_dictionary() to inverse process.
-func get_rpgcharacter_from_dictionary(rpgcharacter_dict_data : Dictionary) -> RPGCharacter:
-	if not _validate_rpgcharacter_dict_data(rpgcharacter_dict_data):
-		return RPGCharacter.new()
+## Create a new RPGCharacter from a dictionary data.
+## You can use the to_dict() to inverse process.
+func from_dict(data: Dictionary) -> void:
+	if not _validate_rpgcharacter_dict_data(data):
+		return
 	
-	var rpgcharacter := RPGCharacter.new()
-	
-	for key : String in rpgcharacter_dict_data.keys():
-		rpgcharacter.set(StringName(key.to_lower()), rpgcharacter_dict_data[key])
-	
-	return rpgcharacter
+	for key : String in data.keys():
+		set(StringName(key.to_lower()), data[key])
 
 #endregion
 
@@ -234,9 +226,9 @@ func _level_up() -> void:
 	level_increased.emit(current_level)
 
 
-## Validate if rpgcharacter_dict_data is a valid dictionary to be pased to
-## get_rpgcharacter_from_dictionary()
-func _validate_rpgcharacter_dict_data(rpgcharacter_dict_data: Dictionary) -> bool:
+## Validate if data is a valid dictionary to be passed to
+## from_dict()
+func _validate_rpgcharacter_dict_data(data: Dictionary) -> bool:
 	var required_keys = [
 		"HP", "HP_MAX", "IS_DEAD", "CURRENT_LEVEL", "LEVEL_MAX",
 		"CURRENT_EXP", "ENERGY", "ENERGY_MAX", "STAMINA", "STAMINA_MAX",
@@ -244,6 +236,6 @@ func _validate_rpgcharacter_dict_data(rpgcharacter_dict_data: Dictionary) -> boo
 		"EXPERIENCE_FACTOR"
 	]
 	
-	return required_keys.all(func(key): return rpgcharacter_dict_data.has(key))
+	return required_keys.all(func(key): return data.has(key))
 
 #endregion
