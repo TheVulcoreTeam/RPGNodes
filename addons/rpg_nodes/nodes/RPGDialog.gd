@@ -69,7 +69,7 @@ func add_section(character_name: String, message: String, avatar_image: String =
 	})
 
 ## next_dialog is used for start dialog or get_next dialog
-func next_dialog() -> Dictionary:
+func next_dialog():
 	# If dialogue not exist or title_name is empty or text is empty send a message if debug is
 	# active
 	if not dialogue or title_name.is_empty() or text.is_empty():
