@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2018 - 2025 Matías Muñoz Espinoza
+# Copyright (c) 2018 - 2026 Matías Muñoz Espinoza
 # Copyright (c) 2018 Jovani Pérez
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -75,6 +75,14 @@ signal sell_price_changed(old_value, new_value)
 			sell_price_changed.emit(old_value, value)
 	get:
 		return sell_price
+
+
+## Item texture
+@export var item_texture : Texture2D:
+	set(value):
+		item_texture = value
+	get:
+		return item_texture
 
 
 ## Obtain the basic properties as a dictionary

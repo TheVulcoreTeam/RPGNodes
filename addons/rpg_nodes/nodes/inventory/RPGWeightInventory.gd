@@ -37,6 +37,10 @@ const FULL_INVENTORY = "The Weight Inventory is full"
 signal weight_filled()
 signal weight_changed(old_value : int, new_value : int)
 
+signal weight_item_added(item_added : RPGWeightItem)
+signal weight_item_droped(item_droped : RPGWeightItem)
+signal weight_item_removed(item_removed : RPGWeightItem)
+
 
 var _weight_inventory : Array[RPGWeightItem] = []:
 	set(value):
@@ -68,6 +72,7 @@ var max_weight := 100:
 func add_item(item: RPGWeightItem) -> bool:
 	if item.weight + _weight <= max_weight:
 		_weight_inventory.append(item)
+		weight_item_added.emit(item)
 		_weight += item.weight
 		return true
 	else:
