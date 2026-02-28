@@ -32,6 +32,7 @@ const CANT_ADD = "You can't add this item: "
 const ITEM_WEIGHT = "Item weight: "
 const WEIGHT_INVETORY  = "Weight Inventory: "
 const FULL_INVENTORY = "The Weight Inventory is full"
+const ITEM_NOT_EXIST = "The RPGWeightItem not exist"
 
 
 signal weight_filled()
@@ -70,6 +71,11 @@ var max_weight := 100:
 
 ## Add item
 func add_item(item: RPGWeightItem) -> bool:
+	# Guard
+	if not item:
+		self._print(ITEM_NOT_EXIST)
+		return false
+	
 	if item.weight + _weight <= max_weight:
 		_weight_inventory.append(item)
 		weight_item_added.emit(item)
