@@ -1,0 +1,6 @@
+[submodule "sumodules/gut"]
+	path = submodules/gut
+	url = git@github.com:bitwes/Gut.git
+[submodule "submodules/gut"]
+	path = submodules/gut
+	url = git@github.com:bitwes/Gut.git
