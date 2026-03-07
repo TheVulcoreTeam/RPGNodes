@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2018 - 2025 Matías Muñoz Espinoza
+# Copyright (c) 2018 - 2026 Matías Muñoz Espinoza
 # Copyright (c) 2018 Jovani Pérez
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,25 +25,25 @@
 
 @icon("res://addons/rpg_nodes/icons/RPGWeightInventory.png")
 
-class_name RPGWeightInventory extends RPGNode
-
+extends RPGNode
+class_name RPGWeightInventory
 
 const CANT_ADD = "You can't add this item: "
 const ITEM_WEIGHT = "Item weight: "
-const WEIGHT_INVETORY  = "Weight Inventory: "
+const WEIGHT_INVETORY = "Weight Inventory: "
 const FULL_INVENTORY = "The Weight Inventory is full"
 const ITEM_NOT_EXIST = "The RPGWeightItem not exist"
 
 
 signal weight_filled()
-signal weight_changed(old_value : int, new_value : int)
+signal weight_changed(old_value: int, new_value: int)
 
-signal weight_item_added(item_added : RPGWeightItem)
-signal weight_item_droped(item_droped : RPGWeightItem)
-signal weight_item_removed(item_removed : RPGWeightItem)
+signal weight_item_added(item_added: RPGWeightItem)
+signal weight_item_droped(item_droped: RPGWeightItem)
+signal weight_item_removed(item_removed: RPGWeightItem)
 
 
-var _weight_inventory : Array[RPGWeightItem] = []:
+var _weight_inventory: Array[RPGWeightItem] = []:
 	set(value):
 		pass
 	get:
@@ -94,8 +94,8 @@ func add_item(item: RPGWeightItem) -> bool:
 
 ## Retrieve an item from the inventory based on its UUID. if not found, 
 ## returns null.
-func get_item(uuid : int) -> RPGWeightItem:
-	for item : RPGWeightItem in _weight_inventory:
+func get_item(uuid: int) -> RPGWeightItem:
+	for item: RPGWeightItem in _weight_inventory:
 		if item.get_instance_id() == uuid:
 			return item
 	
@@ -104,11 +104,33 @@ func get_item(uuid : int) -> RPGWeightItem:
 
 ## Removes an item by its UUID. Returns true if the removal succeeded,
 ## otherwise returns false.
-func remove_item(uuid : int) -> bool:
-	for idx : int in _weight_inventory.size():
+func remove_item(uuid: int) -> bool:
+	for idx: int in _weight_inventory.size():
 		if _weight_inventory[idx].get_instance_id() == uuid:
 			_weight -= _weight_inventory[idx].weight
 			_weight_inventory.remove_at(idx)
 			return true
 	
+	return false
+
+
+## Moves an item from this inventory to another.
+## Returns true if the move was successful, false otherwise.
+func move(item: RPGWeightItem, target_inventory: RPGWeightInventory) -> bool:
+	if not item or not target_inventory:
+		return false
+		
+	if target_inventory == self:
+		return false
+		
+	var idx := _weight_inventory.find(item)
+	if idx == -1:
+		return false
+		
+	if target_inventory.add_item(item):
+		_weight -= item.weight
+		_weight_inventory.remove_at(idx)
+		weight_item_removed.emit(item)
+		return true
+		
 	return false
