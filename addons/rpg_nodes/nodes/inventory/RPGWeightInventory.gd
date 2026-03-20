@@ -134,3 +134,26 @@ func move(item: RPGWeightItem, target_inventory: RPGWeightInventory) -> bool:
 		return true
 		
 	return false
+
+
+## Apila los items del mismo tipo según su nombre (item_name).
+## Retorna un diccionario donde la clave es el nombre del item, y el valor
+## es un diccionario con el "item" base, la cantidad "amount", y una lista "items".
+func get_stacked_items() -> Dictionary:
+	var stacked := {}
+	
+	for item: RPGWeightItem in _weight_inventory:
+		var key := item.item_name
+		
+		if stacked.has(key):
+			stacked[key]["amount"] += 1
+			stacked[key]["items"].append(item)
+		else:
+			var items_array: Array[RPGWeightItem] = [item]
+			stacked[key] = {
+				"item": item,
+				"amount": 1,
+				"items": items_array
+			}
+			
+	return stacked
