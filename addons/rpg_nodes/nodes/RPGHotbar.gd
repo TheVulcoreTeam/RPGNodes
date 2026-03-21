@@ -23,7 +23,7 @@
 
 extends Node
 
-class_name Hotbar
+class_name RPGHotbar
 
 
 signal item_used(slot_index, item)
