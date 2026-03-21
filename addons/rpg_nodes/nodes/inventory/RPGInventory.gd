@@ -20,45 +20,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-
+@abstract
 extends Node
+class_name RPGInventory
 
-class_name Hotbar
+signal item_added(item: RPGItem)
+signal item_removed(item: RPGItem)
 
-
-signal item_used(slot_index, item)
-#signal hotbar_changed(hotbar_index)
-
-@export var reference_inventory : RPGInventory
-@export var slot_amount := 5
-var slots : Array[RPGItem]
+var _items_list : Array[RPGItem]
 
 
-func _ready() -> void:
-	slots.resize(slot_amount)
+@abstract
+func add_item(item: RPGItem) -> bool
 
 
-func equip_item(slot, item) -> bool:
-	if slot > slot_amount:
-		return false
-	
-	slots[slot] = item
-	return true
+@abstract
+func get_item(uuid: int) -> RPGItem
 
 
-func unequip_item(slot) -> bool:
-	if slot > slot_amount:
-		return false
-	
-	slots[slot] = null
-	return true
-
-
-func use_slot(slot_index) -> bool:
-	if not slots[slot_index].has_method("use"):
-		return false
-	
-	slots[slot_index].use()
-	item_used.emit(slot_index, slots[slot_index])
-	
-	return true
+@abstract
+func remove_item(uuid: int) -> bool

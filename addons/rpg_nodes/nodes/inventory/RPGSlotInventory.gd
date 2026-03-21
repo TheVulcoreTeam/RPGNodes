@@ -26,7 +26,7 @@
 
 @icon("res://addons/rpg_nodes/icons/RPGSlotInventory.png")
 
-extends RPGNode
+extends RPGInventory
 
 class_name RPGSlotInventory
 
@@ -38,8 +38,8 @@ const ITEM_NOT_FOUND = "Item not found in inventory"
 const NO_SPACE_AVAILABLE = "No available space for item"
 
 # Signals
-signal item_added(item: RPGSlotItem, position: Vector2i)
-signal item_removed(item: RPGSlotItem)
+signal slot_item_added(item: RPGSlotItem, position: Vector2i)
+signal slot_item_removed(item: RPGSlotItem)
 signal item_position_changed(item: RPGSlotItem, old_position: Vector2i, new_position: Vector2i)
 signal placement_failed(item: RPGSlotItem, reason: String)
 
@@ -80,8 +80,14 @@ func _initialize_grid() -> void:
 # Special value for auto-positioning
 const AUTO_POSITION = Vector2i(-1, -1)
 
+
+func add_item(item: RPGItem) -> bool:
+	# TODO: Implement
+	return true
+
+
 # Add item to inventory (auto-position if position is AUTO_POSITION)
-func add_item(item: RPGSlotItem, position: Vector2i = AUTO_POSITION) -> bool:
+func add_item_with_position(item: RPGSlotItem, position: Vector2i = AUTO_POSITION) -> bool:
 	if not _validate_item_dimensions(item):
 		placement_failed.emit(item, INVALID_DIMENSIONS)
 		return false

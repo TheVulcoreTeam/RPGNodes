@@ -21,8 +21,8 @@
 # SOFTWARE.
 
 @icon("res://addons/rpg_nodes/icons/RPGDialog.png")
-
-class_name RPGDialog extends RPGNode
+extends RPGNode
+class_name RPGDialog 
 
 
 ## Remember set that variable to use the dialogs

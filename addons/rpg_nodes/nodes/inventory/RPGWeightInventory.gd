@@ -25,7 +25,7 @@
 
 @icon("res://addons/rpg_nodes/icons/RPGWeightInventory.png")
 
-extends RPGNode
+extends RPGInventory
 class_name RPGWeightInventory
 
 const CANT_ADD = "You can't add this item: "
@@ -70,10 +70,10 @@ var max_weight := 100:
 
 
 ## Add item
-func add_item(item: RPGWeightItem) -> bool:
+func add_item(item: RPGItem) -> bool:
 	# Guard
 	if not item:
-		self._print(ITEM_NOT_EXIST)
+		#self._print(ITEM_NOT_EXIST)
 		return false
 	
 	if item.weight + _weight <= max_weight:
@@ -82,14 +82,14 @@ func add_item(item: RPGWeightItem) -> bool:
 		_weight += item.weight
 		return true
 	else:
-		self._print(
-			str(
-				CANT_ADD + item.item_name,
-				FULL_INVENTORY,
-				ITEM_WEIGHT + str(item.weight),
-				WEIGHT_INVETORY + str(_weight)
-			)
-		)
+		#self._print(
+			#str(
+				#CANT_ADD + item.item_name,
+				#FULL_INVENTORY,
+				#ITEM_WEIGHT + str(item.weight),
+				#WEIGHT_INVETORY + str(_weight)
+			#)
+		#)
 		return false
 
 ## Retrieve an item from the inventory based on its UUID. if not found, 
