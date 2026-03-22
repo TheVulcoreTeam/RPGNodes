@@ -21,8 +21,8 @@
 # SOFTWARE.
 
 @icon("res://addons/rpg_nodes/icons/RPGItem.png")
-
-class_name RPGWeightItem extends RPGItem
+extends RPGItem
+class_name RPGWeightItem 
 
 
 signal weight_updated(new_weight)

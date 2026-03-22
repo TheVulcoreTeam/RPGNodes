@@ -21,8 +21,8 @@
 # SOFTWARE.
 
 @icon("res://addons/rpg_nodes/icons/RPGItem.png")
-
-class_name RPGPotion extends RPGWeightItem
+extends RPGWeightItem
+class_name RPGPotion
 
 
 enum PotionEffect {HEALTH, MANA, SATURATION}

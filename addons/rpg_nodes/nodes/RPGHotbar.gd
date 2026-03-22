@@ -27,11 +27,11 @@ class_name RPGHotbar
 
 
 signal item_used(slot_index, item)
-#signal hotbar_changed(hotbar_index)
+signal hotbar_changed(hotbar_index, item)
 
 @export var reference_inventory : RPGInventory
 @export var slot_amount := 5
-var slots : Array[RPGItem]
+var slots := [null, null, null, null, null]
 
 
 func _ready() -> void:
@@ -43,6 +43,9 @@ func equip_item(slot, item) -> bool:
 		return false
 	
 	slots[slot] = item
+	
+	hotbar_changed.emit(slot, item)
+	
 	return true
 
 
@@ -51,6 +54,9 @@ func unequip_item(slot) -> bool:
 		return false
 	
 	slots[slot] = null
+	
+	hotbar_changed.emit(slot, slots[slot])
+	
 	return true
 
 

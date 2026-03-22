@@ -22,8 +22,8 @@
 # SOFTWARE.
 
 @icon("res://addons/rpg_nodes/icons/RPGItem.png")
-
-class_name RPGItem extends Resource
+extends Resource
+class_name RPGItem
 
 
 signal item_name_changed(old_name, new_name)
