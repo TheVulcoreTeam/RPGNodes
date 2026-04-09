@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2025 - 2026 Matías Muñoz Espinoza
+# Copyright (c) 2026 Matías Muñoz Espinoza
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,53 +21,10 @@
 # SOFTWARE.
 
 @icon("res://addons/rpg_nodes/icons/RPGItem.png")
-extends RPGConsumable
-class_name RPGPotion
+@abstract
+extends RPGWeightItem
+class_name RPGConsumable
 
-enum PotionEffect {HEALTH, ENERGY, STAMINA}
+signal consumed(item)
 
-signal effect_type_changed(old_value, new_value)
-signal value_changed(old_value, new_value)
-signal duration_changed(old_value, new_value)
-
-
-## Potion effect type
-@export var effect_type: PotionEffect = PotionEffect.HEALTH:
-	set(val):
-		if effect_type != val:
-			effect_type_changed.emit(effect_type, val)
-			effect_type = val
-	get:
-		return effect_type
-
-
-## Effect value
-@export var value := 5:
-	set(val):
-		if value != val:
-			value_changed.emit(value, val)
-			value = val
-	get:
-		return value
-
-
-## Effect duration
-@export var duration := 0.0:
-	set(val):
-		if duration != val:
-			duration_changed.emit(duration, val)
-			duration = val
-	get:
-		return duration
-
-
-func consume(player: RPGCharacter):
-	match effect_type:
-		PotionEffect.HEALTH:
-			player.hp += value
-		PotionEffect.ENERGY:
-			player.energy += value
-		PotionEffect.STAMINA:
-			player.stamina += value
-	
-	consumed.emit(self)
+@abstract func consume(player: RPGCharacter)

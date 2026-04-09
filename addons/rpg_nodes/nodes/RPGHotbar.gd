@@ -26,11 +26,12 @@ extends Node
 class_name RPGHotbar
 
 
-signal item_used(slot_index, item)
+signal item_consumed(slot_index, item)
 signal hotbar_changed(hotbar_index, item)
 
 @export var reference_inventory : RPGInventory
 @export var slot_amount := 5
+## Debe guardar solo RPGItems
 var slots := [null, null, null, null, null]
 
 
@@ -60,11 +61,22 @@ func unequip_item(slot) -> bool:
 	return true
 
 
-func use_slot(slot_index) -> bool:
-	if not slots[slot_index].has_method("use"):
+func consume(slot_index) -> bool:
+	if not slots[slot_index]:
 		return false
 	
-	slots[slot_index].use()
-	item_used.emit(slot_index, slots[slot_index])
+	if not slots[slot_index].has_method("consume"):
+		return false
+	
+	# Se consume el item
+	slots[slot_index].consume(DataManager.player_data)
+	# Se emite señal de que el item fue consumido
+	item_consumed.emit(slot_index, slots[slot_index])
+	# Se elimina item después de ser consumido
+	slots[slot_index] = null
 	
 	return true
+
+
+func get_item(idx : int):
+	return slots[idx]
