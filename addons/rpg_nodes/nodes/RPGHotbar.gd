@@ -29,7 +29,7 @@ class_name RPGHotbar
 signal item_consumed(slot_index, item)
 signal hotbar_changed(hotbar_index, item)
 
-@export var reference_inventory : RPGInventory
+@export var reference_inventory: RPGInventory
 @export var slot_amount := 5
 ## Debe guardar solo RPGItems
 var slots := [null, null, null, null, null]
@@ -78,5 +78,5 @@ func consume(slot_index) -> bool:
 	return true
 
 
-func get_item(idx : int):
+func get_item(idx: int):
 	return slots[idx]

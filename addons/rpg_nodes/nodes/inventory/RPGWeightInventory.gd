@@ -40,7 +40,7 @@ signal weight_changed(old_value: int, new_value: int)
 
 signal weight_item_added(item_added: RPGWeightItem)
 signal weight_item_droped(item_droped: RPGWeightItem)
-signal weight_item_removed(item_removed: RPGWeightItem)
+signal weight_item_removed()
 
 
 var _weight_inventory: Array[RPGWeightItem] = []:
@@ -109,6 +109,7 @@ func remove_item(uuid: int) -> bool:
 		if _weight_inventory[idx].get_instance_id() == uuid:
 			_weight -= _weight_inventory[idx].weight
 			_weight_inventory.remove_at(idx)
+			weight_item_removed.emit()
 			return true
 	
 	return false
