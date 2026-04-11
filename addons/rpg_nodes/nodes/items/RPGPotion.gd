@@ -42,7 +42,7 @@ signal duration_changed(old_value, new_value)
 
 
 ## Effect value
-@export var value := 5:
+@export var value := 10:
 	set(val):
 		if value != val:
 			value_changed.emit(value, val)

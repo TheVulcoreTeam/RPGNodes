@@ -58,7 +58,7 @@ signal stamina_depleted()
 		return energy_max
 
 
-@export var stamina := 20.0:
+@export var stamina := 2.5:
 	set(value):
 		var old_stamina := stamina
 		var new_stamina := clamp(value, 0, stamina_max)
@@ -80,16 +80,16 @@ signal stamina_depleted()
 		return stamina
 
 
-@export var stamina_max := 20.0:
+@export var stamina_max := 2.5:
 	set(value):
-		stamina_max = clamp(value, 1.0, MAX_VALUE)
+		stamina_max = clamp(value, 2.5, MAX_VALUE)
 	get:
 		return stamina_max
 
 
-@export var stamina_regen_per_second := 2.0:
+@export var stamina_regen_per_second := 1.5:
 	set(value):
-		stamina_regen_per_second = clamp(value, 1.0, stamina_max)
+		stamina_regen_per_second = clamp(value, 1.5, stamina_max)
 	get:
 		return stamina_regen_per_second
 

@@ -1,6 +1,6 @@
 # MIT License
 #
-# Copyright (c) 2025 Matías Muñoz Espinoza
+# Copyright (c) 2025 - 2026 Matías Muñoz Espinoza
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
 
 @icon("res://addons/rpg_nodes/icons/RPGItem.png")
 extends RPGItem
-class_name RPGWeightItem 
+class_name RPGWeightItem
 
 
 signal weight_updated(new_weight)
